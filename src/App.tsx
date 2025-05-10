@@ -20,7 +20,7 @@ import water from "./assets/water.svg";
 import pokeball from "./assets/pokeball.svg";
 
 const myVariable = "";
-const myVariable2 = "";
+
 /**
  *  Iconos de los tipos de Pokémon
  */

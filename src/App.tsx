@@ -19,6 +19,7 @@ import steel from "./assets/steel.svg";
 import water from "./assets/water.svg";
 import pokeball from "./assets/pokeball.svg";
 
+const myVariable = "";
 /**
  *  Iconos de los tipos de Pokémon
  */
@@ -140,6 +141,15 @@ export const App = () => {
    */
   useEffect(() => {
     if (sorting !== "default") {
+      if (sorting === "hp") {
+        setFinalResult((prev) =>
+          [...prev].sort((a, b) => {
+            const aStat = a.stats.find((stat) => stat.stat.name === "hp");
+            const bStat = b.stats.find((stat) => stat.stat.name === "hp");
+            return bStat.base_stat - aStat.base_stat;
+          }),
+        );
+      }
       if (sorting === "attack") {
         setFinalResult((prev) =>
           [...prev].sort((a, b) => {

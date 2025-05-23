@@ -8,8 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "postinstall": "husky",
-    "lint-staged": "lint-staged"
+    "test": "vitest"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
@@ -21,9 +20,14 @@
     "node": "22"
   },
   "dependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "jsdom": "^26.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.0.2"
+    "react-router-dom": "^7.0.2",
+    "vitest": "^3.1.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.26.0",

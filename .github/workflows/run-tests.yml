@@ -5,17 +5,20 @@ on:
     branches: [master]
 
 jobs:
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+  test:
+    runs-on: ubuntu-latest
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: "22"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Install dependencies
-      run: yarn install
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
 
-    - name: Run tests
-      run: yarn test
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run tests
+        run: yarn test

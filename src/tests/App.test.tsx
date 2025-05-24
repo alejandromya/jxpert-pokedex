@@ -19,7 +19,7 @@ describe("App Component", () => {
     });
 
     secondFetch.mockResolvedValueOnce({
-      json: async () => pokemonList,
+      json: async () => pokemonList[0],
     });
 
     render(<App />);
@@ -43,7 +43,7 @@ describe("App Component", () => {
     });
 
     secondFetch.mockResolvedValueOnce({
-      json: async () => pokemonList,
+      json: async () => pokemonList[1],
     });
 
     render(<App />);

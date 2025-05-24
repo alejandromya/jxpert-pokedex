@@ -109,6 +109,7 @@ export const App = () => {
       const { results }: any = await fetch(
         `https://pokeapi.co/api/v2/pokemon?offset=${regStart}&limit=${regEnd}`,
       ).then((res) => res.json());
+      console.log(results);
       const result = await Promise.all(
         results.map(
           async ({ url }) => await fetch(url).then((res) => res.json()),
@@ -140,15 +141,6 @@ export const App = () => {
    */
   useEffect(() => {
     if (sorting !== "default") {
-      if (sorting === "hp") {
-        setFinalResult((prev) =>
-          [...prev].sort((a, b) => {
-            const aStat = a.stats.find((stat) => stat.stat.name === "hp");
-            const bStat = b.stats.find((stat) => stat.stat.name === "hp");
-            return bStat.base_stat - aStat.base_stat;
-          }),
-        );
-      }
       if (sorting === "attack") {
         setFinalResult((prev) =>
           [...prev].sort((a, b) => {

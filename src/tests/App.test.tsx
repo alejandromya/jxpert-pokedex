@@ -2,9 +2,10 @@ import { describe, expect, test, vi } from "vitest";
 import { App } from "../App";
 import { render, screen } from "@testing-library/react";
 import pokemonList from "./pokemonListMock.json";
+import userEvent from "@testing-library/user-event";
 
 describe("App Component", () => {
-  test.only("debería verse el nombre del bulbasaur cuando se cargan los datos", async () => {
+  test("deberian asegurarse las llamadas a la API", async () => {
     const mockFetch = vi.fn();
     globalThis.fetch = mockFetch;
 
@@ -24,8 +25,6 @@ describe("App Component", () => {
 
     render(<App />);
 
-    const bulbasaur = await screen.findByText("bulbasaur");
-    expect(bulbasaur).toBeInTheDocument();
     expect(mockFetch).toHaveBeenNthCalledWith(
       1,
       "https://pokeapi.co/api/v2/pokemon?offset=0&limit=151",
@@ -57,7 +56,7 @@ describe("App Component", () => {
     expect(snorlax).toBeInTheDocument();
   });
 
-  test("debería verse la imagen de bulbasaur cuando se cargan los datos", async () => {
+  test("debería mostrarse todos los datus de Bulbasaur", async () => {
     const mockFetch = vi.fn();
     globalThis.fetch = mockFetch;
 
@@ -77,7 +76,33 @@ describe("App Component", () => {
 
     render(<App />);
 
+    const bulbasaurName = await screen.findByText("bulbasaur");
+    expect(bulbasaurName).toBeInTheDocument();
+    const bulbasaurHp = await screen.findByText("Hp");
+    expect(bulbasaurHp).toBeInTheDocument();
+    const bulbasaurAt = await screen.findByText("At");
+    expect(bulbasaurAt).toBeInTheDocument();
+    const bulbasaurDf = await screen.findByText("Df");
+    expect(bulbasaurDf).toBeInTheDocument();
+    const bulbasaurSpA = await screen.findByText("SpA");
+    expect(bulbasaurSpA).toBeInTheDocument();
+    const bulbasaurSpD = await screen.findByText("SpD");
+    expect(bulbasaurSpD).toBeInTheDocument();
+    const bulbasaurSpd = await screen.findByText("Spd");
+    expect(bulbasaurSpd).toBeInTheDocument();
+
     const bulbasaurArtwork = await screen.findByAltText("bulbasaur artwork");
     expect(bulbasaurArtwork).toBeInTheDocument();
+  });
+
+  test.only("cuando pulsamos la combobutton se abre el listado", async () => {
+    render(<App />);
+
+    const combobox = await screen.findByRole("combobox", {
+      name: "Select reg",
+    });
+    userEvent.click(combobox);
+
+    expect(combobox).toHaveVtoalue("honen");
   });
 });

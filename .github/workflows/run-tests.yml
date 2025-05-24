@@ -1,10 +1,8 @@
 name: Run Tests on Self-Hosted Runner
 
 on:
-  push:
-    branches: [main]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 jobs:
   test:
@@ -20,7 +18,7 @@ jobs:
           node-version: "22"
 
       - name: Install dependencies
-        run: yarn ci
+        run: yarn install
 
       - name: Run tests
-        run: yarn run test
+        run: yarn test

@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "pre-push": "test"
+    "pre-push": "yarn test"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [

@@ -12,7 +12,7 @@ describe("App Component", () => {
       json: async () => ({
         results: [
           {
-            name: "bulbasaur",
+            name: "pikachu",
             url: "https://pokeapi.co/api/v2/pokemon/1/",
           },
         ],

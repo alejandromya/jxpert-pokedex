@@ -101,8 +101,12 @@ describe("App Component", () => {
     const combobox = await screen.findByRole("combobox", {
       name: "Select reg",
     });
-    userEvent.click(combobox);
 
-    // expect(combobox).toHaveVtoalue("honen");
+    await userEvent.click(combobox);
+    const region = screen.getByRole("radio", {
+      name: "unova",
+    });
+
+    expect(region).toBeInTheDocument();
   });
 });

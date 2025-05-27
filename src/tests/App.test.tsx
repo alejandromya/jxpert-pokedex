@@ -1,7 +1,10 @@
 import { describe, expect, test, vi } from "vitest";
 import { App } from "../App";
 import { render, screen } from "@testing-library/react";
-import pokemonList from "./pokemonListMock.json";
+import pokemonMockBulbasaur from "./__fixtures__/pokemonMockBulbasaur.json";
+import pokemonMockSnorlax from "./__fixtures__/pokemonMockSnorlax.json";
+//import pokemonMockServine from "./__fixtures__/pokemonMockServine.json";
+
 import userEvent from "@testing-library/user-event";
 
 describe("App Component", () => {
@@ -20,7 +23,7 @@ describe("App Component", () => {
     });
 
     secondFetch.mockResolvedValueOnce({
-      json: async () => pokemonList[0],
+      json: async () => pokemonMockBulbasaur,
     });
 
     render(<App />);
@@ -47,7 +50,7 @@ describe("App Component", () => {
     });
 
     secondFetch.mockResolvedValueOnce({
-      json: async () => pokemonList[1],
+      json: async () => pokemonMockSnorlax,
     });
 
     render(<App />);
@@ -71,7 +74,7 @@ describe("App Component", () => {
     });
 
     secondFetch.mockResolvedValueOnce({
-      json: async () => pokemonList[0],
+      json: async () => pokemonMockBulbasaur,
     });
 
     render(<App />);
@@ -96,6 +99,23 @@ describe("App Component", () => {
   });
 
   test.only("cuando pulsamos la combobutton se abre el listado", async () => {
+    const mockFetch = vi.fn();
+    globalThis.fetch = mockFetch;
+
+    mockFetch
+      .mockResolvedValueOnce({
+        json: async () => ({
+          results: [
+            {
+              url: "https://pokeapi.co/api/v2/pokemon/1/",
+            },
+          ],
+        }),
+      })
+      .mockResolvedValueOnce({
+        json: async () => pokemonMockBulbasaur,
+      });
+
     render(<App />);
 
     const combobox = await screen.findByRole("combobox", {
@@ -106,6 +126,7 @@ describe("App Component", () => {
     const region = screen.getByRole("radio", {
       name: "unova",
     });
+    await userEvent.click(combobox);
 
     expect(region).toBeInTheDocument();
   });

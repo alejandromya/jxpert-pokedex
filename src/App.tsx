@@ -109,7 +109,6 @@ export const App = () => {
       const { results }: any = await fetch(
         `https://pokeapi.co/api/v2/pokemon?offset=${regStart}&limit=${regEnd}`,
       ).then((res) => res.json());
-      console.log(results);
       const result = await Promise.all(
         results.map(
           async ({ url }) => await fetch(url).then((res) => res.json()),

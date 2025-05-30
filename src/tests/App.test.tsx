@@ -38,6 +38,28 @@ const getGenerateMockFetch = () => {
         return returnedValueServine;
       }
     },
+    fetchMock2: async () => {
+      callNumber++;
+      const returnedValueUrl = {
+        json: async () => ({
+          results: [
+            {
+              url: "url",
+            },
+          ],
+        }),
+      };
+
+      const returnedBulbasaurServine = {
+        json: async () => [pokemonMockBulbasaur, pokemonMockServine],
+      };
+
+      if (callNumber === 1 || callNumber === 3) {
+        return returnedValueUrl;
+      } else {
+        return returnedBulbasaurServine;
+      }
+    },
   };
 };
 
@@ -120,5 +142,19 @@ describe("App Component", () => {
     const bulbasaurName = await screen.findByText("bulbasaur");
 
     expect(bulbasaurName).toBeInTheDocument();
+  });
+
+  test.skip("comparamos el sort by de dos pokemons", async () => {
+    const mockFetch = vi.fn();
+    globalThis.fetch = mockFetch;
+
+    mockFetch.mockImplementation(getGenerateMockFetch().fetchMock2);
+
+    render(<App />);
+
+    const bulbasaurName = await screen.findByText("bulbasaur");
+    const servineName = await screen.findByText("servine");
+    expect(bulbasaurName).toBeInTheDocument();
+    expect(servineName).toBeInTheDocument();
   });
 });

@@ -40,7 +40,22 @@ const getGenerateMockFetch = () => {
     },
   };
 };
+
 describe("App Component", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+  });
+
+  test("cuando cargamos la pagina hay un skeleton", async () => {
+    const mockFetch = vi.fn();
+    globalThis.fetch = mockFetch;
+    const migenerador = getGenerateMockFetch();
+    mockFetch.mockImplementation(migenerador.fetchMock);
+    render(<App />);
+    const skeleton = screen.getAllByTestId("skeleton");
+    expect(skeleton).toHaveLength(6);
+  });
+
   test("debería mostrarse todos los datus de Bulbasaur", async () => {
     const mockFetch = vi.fn();
     globalThis.fetch = mockFetch;
@@ -92,14 +107,18 @@ describe("App Component", () => {
     expect(servine).toBeInTheDocument();
   });
 
-  test.only("cuando cargamos la pagina hay un skeleton", async () => {
-    //const mockFetch = vi.fn();
-    // globalThis.fetch = mockFetch;
+  test("cuando busquemos un pokemon que busque similitudes de texto", async () => {
+    const mockFetch = vi.fn();
+    globalThis.fetch = mockFetch;
 
-    // mockFetch.mockImplementation(getGenerateMockFetch().fetchMock);
-
+    mockFetch.mockImplementation(getGenerateMockFetch().fetchMock);
     render(<App />);
-    const skeleton = screen.getAllByTestId("skeleton");
-    expect(skeleton).toHaveLength(6);
+
+    const textbox = await screen.findByRole("textbox");
+
+    await userEvent.type(textbox, "bulb");
+    const bulbasaurName = await screen.findByText("bulbasaur");
+
+    expect(bulbasaurName).toBeInTheDocument();
   });
 });

@@ -93,11 +93,13 @@ describe("App Component", () => {
   });
 
   test.only("cuando cargamos la pagina hay un skeleton", async () => {
-    const mockFetch = vi.fn();
-    globalThis.fetch = mockFetch;
+    //const mockFetch = vi.fn();
+    // globalThis.fetch = mockFetch;
 
-    mockFetch.mockImplementation(getGenerateMockFetch().fetchMock);
+    // mockFetch.mockImplementation(getGenerateMockFetch().fetchMock);
 
     render(<App />);
+    const skeleton = screen.getAllByTestId("skeleton");
+    expect(skeleton).toHaveLength(6);
   });
 });

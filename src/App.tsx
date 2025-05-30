@@ -525,6 +525,7 @@ export const App = () => {
               {Array.from({ length: 6 }, (_, index) => {
                 return (
                   <article
+                    data-testid="skeleton"
                     key={`placeholder-card-${index}`}
                     className="card card-placeholder"
                   >

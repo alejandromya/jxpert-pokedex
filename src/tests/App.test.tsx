@@ -44,20 +44,29 @@ const getGenerateMockFetch = () => {
         json: async () => ({
           results: [
             {
-              url: "url",
+              url: "urlBulbasur",
+            },
+            {
+              url: "urlServine",
             },
           ],
         }),
       };
 
-      const returnedBulbasaurServine = {
-        json: async () => [pokemonMockBulbasaur, pokemonMockServine],
+      const returnedValueBulbasaur = {
+        json: async () => pokemonMockBulbasaur,
       };
 
-      if (callNumber === 1 || callNumber === 3) {
+      const returnedValueServine = {
+        json: async () => pokemonMockServine,
+      };
+
+      if (callNumber === 1) {
         return returnedValueUrl;
-      } else {
-        return returnedBulbasaurServine;
+      } else if (callNumber === 2) {
+        return returnedValueBulbasaur;
+      } else if (callNumber === 3) {
+        return returnedValueServine;
       }
     },
   };
@@ -144,7 +153,7 @@ describe("App Component", () => {
     expect(bulbasaurName).toBeInTheDocument();
   });
 
-  test.skip("comparamos el sort by de dos pokemons", async () => {
+  test.only("comparamos el sort by de dos pokemons", async () => {
     const mockFetch = vi.fn();
     globalThis.fetch = mockFetch;
 
@@ -152,9 +161,30 @@ describe("App Component", () => {
 
     render(<App />);
 
-    const bulbasaurName = await screen.findByText("bulbasaur");
-    const servineName = await screen.findByText("servine");
-    expect(bulbasaurName).toBeInTheDocument();
-    expect(servineName).toBeInTheDocument();
+    const listBeforeOrder = await screen.findByTestId("lista");
+    const firstElementBefore = listBeforeOrder.children[0];
+    const secondElementBefore = listBeforeOrder.children[1];
+
+    expect(firstElementBefore).toHaveTextContent("bulbasaur");
+    expect(secondElementBefore).toHaveTextContent("servine");
+
+    const combobox = await screen.findByRole("combobox", {
+      name: "Sort by",
+    });
+    await userEvent.click(combobox);
+
+    const radio = await screen.findByRole("radio", {
+      name: "Health points",
+    });
+    await userEvent.click(radio);
+
+    //bulbasur 45HP servine 60HP
+
+    const listAfterOrder = await screen.findByTestId("lista");
+    const firstElementAfter = listAfterOrder.children[0];
+    const secondElementAfter = listAfterOrder.children[1];
+
+    expect(firstElementAfter).toHaveTextContent("servine");
+    expect(secondElementAfter).toHaveTextContent("bulbasaur");
   });
 });

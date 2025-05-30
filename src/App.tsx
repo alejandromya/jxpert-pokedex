@@ -109,11 +109,15 @@ export const App = () => {
       const { results }: any = await fetch(
         `https://pokeapi.co/api/v2/pokemon?offset=${regStart}&limit=${regEnd}`,
       ).then((res) => res.json());
+
+      // console.log({ results });
+
       const result = await Promise.all(
         results.map(
           async ({ url }) => await fetch(url).then((res) => res.json()),
         ),
       );
+      // console.log(result);
       setResult(result);
       setFinalResult(result);
       setLdr(false);
@@ -539,7 +543,7 @@ export const App = () => {
           )}
           {/* Prints cards */}
           {!fltr && !ldr && finalResult.length > 0 && (
-            <ul className="grid">
+            <ul className="grid" data-testid="lista">
               {finalResult.map((res) => {
                 const customStyles: any = {
                   "--color-type": `var(--color-${res.types[0].type.name}`,

@@ -1,28 +1,33 @@
 import { useEffect, useState } from "react";
-import bug from "./assets/bug.svg";
-import dark from "./assets/dark.svg";
-import dragon from "./assets/dragon.svg";
-import electric from "./assets/electric.svg";
-import fairy from "./assets/fairy.svg";
-import fighting from "./assets/fighting.svg";
-import fire from "./assets/fire.svg";
-import flying from "./assets/flying.svg";
-import ghost from "./assets/ghost.svg";
-import grass from "./assets/grass.svg";
-import ground from "./assets/ground.svg";
-import ice from "./assets/ice.svg";
-import normal from "./assets/normal.svg";
-import poison from "./assets/poison.svg";
-import psychic from "./assets/psychic.svg";
-import rock from "./assets/rock.svg";
-import steel from "./assets/steel.svg";
-import water from "./assets/water.svg";
-import pokeball from "./assets/pokeball.svg";
+import bug from "./assets/iconos/bug.svg";
+import dark from "./assets/iconos/dark.svg";
+import dragon from "./assets/iconos/dragon.svg";
+import electric from "./assets/iconos/electric.svg";
+import fairy from "./assets/iconos/fairy.svg";
+import fighting from "./assets/iconos/fighting.svg";
+import fire from "./assets/iconos/fire.svg";
+import flying from "./assets/iconos/flying.svg";
+import ghost from "./assets/iconos/ghost.svg";
+import grass from "./assets/iconos/grass.svg";
+import ground from "./assets/iconos/ground.svg";
+import ice from "./assets/iconos/ice.svg";
+import normal from "./assets/iconos/normal.svg";
+import poison from "./assets/iconos/poison.svg";
+import psychic from "./assets/iconos/psychic.svg";
+import rock from "./assets/iconos/rock.svg";
+import steel from "./assets/iconos/steel.svg";
+import water from "./assets/iconos/water.svg";
+import pokeball from "./assets/iconos/pokeball.svg";
 
 /**
  *  Iconos de los tipos de Pokémon
  */
-const icns: any = {
+
+type Icons = {
+  [key: string]: string;
+};
+
+const iconos: Icons = {
   bug,
   dark,
   dragon,
@@ -43,7 +48,7 @@ const icns: any = {
   water,
 };
 
-const regs = [
+const regiones: string[] = [
   "kanto",
   "johto",
   "hoenn",
@@ -56,13 +61,13 @@ const regs = [
 ];
 
 export const App = () => {
-  const [ldr, setLdr] = useState<any>(false);
-  const [fltr, setFltr] = useState<any>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isFiltered, setIsFiltered] = useState<boolean>(false);
   const [result, setResult] = useState<any>([]);
   const [finalResult, setFinalResult] = useState<any>([]);
   const [busqueda, setBusqueda] = useState<any>("");
-  const [reg, setreg] = useState<any>("kanto");
-  const [showregs, setShowregs] = useState<any>(false);
+  const [selectedRegion, setSelectedRegion] = useState<string>("kanto");
+  const [isShowingRegions, setIsShowingRegions] = useState<boolean>(false);
   const [showSort, setShowSort] = useState<any>(false);
   const [sorting, setSort] = useState<any>("default");
 
@@ -71,35 +76,35 @@ export const App = () => {
      *  Carga de datos de Pokémons y gestión de estado de cargando.
      */
     const getData = async () => {
-      setLdr(true);
-      setFltr(true);
+      setIsLoading(true);
+      setIsFiltered(true);
 
       let regStart, regEnd;
-      if (reg === "kanto") {
+      if (selectedRegion === "kanto") {
         regStart = 0;
         regEnd = 151;
-      } else if (reg === "johto") {
+      } else if (selectedRegion === "johto") {
         regStart = 151;
         regEnd = 251;
-      } else if (reg === "hoenn") {
+      } else if (selectedRegion === "hoenn") {
         regStart = 251;
         regEnd = 386;
-      } else if (reg === "sinnoh") {
+      } else if (selectedRegion === "sinnoh") {
         regStart = 386;
         regEnd = 494;
-      } else if (reg === "unova") {
+      } else if (selectedRegion === "unova") {
         regStart = 494;
         regEnd = 649;
-      } else if (reg === "kalos") {
+      } else if (selectedRegion === "kalos") {
         regStart = 649;
         regEnd = 721;
-      } else if (reg === "alola") {
+      } else if (selectedRegion === "alola") {
         regStart = 721;
         regEnd = 809;
-      } else if (reg === "galar") {
+      } else if (selectedRegion === "galar") {
         regStart = 809;
         regEnd = 905;
-      } else if (reg === "paldea") {
+      } else if (selectedRegion === "paldea") {
         regStart = 905;
         regEnd = 1025;
       } else {
@@ -120,10 +125,10 @@ export const App = () => {
       // console.log(result);
       setResult(result);
       setFinalResult(result);
-      setLdr(false);
+      setIsLoading(false);
     };
     getData();
-  }, [reg]);
+  }, [selectedRegion]);
   /**
    * Filters results based on input query term.
    */
@@ -137,7 +142,7 @@ export const App = () => {
           ),
       ),
     );
-    setFltr(false);
+    setIsFiltered(false);
   }, [result[0]?.id, busqueda]);
   /**
    * Sorts results based on selected sorting criteria.
@@ -261,10 +266,10 @@ export const App = () => {
               aria-haspopup="listbox"
               aria-controls="reg-list"
               aria-label="Select reg"
-              aria-expanded={showregs}
-              className={`dropdown__button ${showregs ? "active" : ""}`}
+              aria-expanded={isShowingRegions}
+              className={`dropdown__button ${isShowingRegions ? "active" : ""}`}
               onClick={() =>
-                setShowregs((prev) => {
+                setIsShowingRegions((prev) => {
                   if (showSort) {
                     setShowSort(false);
                   }
@@ -272,7 +277,7 @@ export const App = () => {
                 })
               }
             >
-              {reg}
+              {selectedRegion}
               <svg
                 width="16"
                 height="16"
@@ -299,24 +304,24 @@ export const App = () => {
             <ol
               role="listbox"
               id="reg-list"
-              hidden={!showregs}
-              className={`dropdown__list ${!showregs ? "hide" : ""}`}
+              hidden={!isShowingRegions}
+              className={`dropdown__list ${!isShowingRegions ? "hide" : ""}`}
             >
-              {regs.map((key) => (
+              {regiones.map((key) => (
                 <li
                   key={key}
                   role="radio"
-                  aria-checked={reg === key}
+                  aria-checked={selectedRegion === key}
                   tabIndex={0}
-                  className={reg === key ? "active" : ""}
+                  className={selectedRegion === key ? "active" : ""}
                   onClick={() => {
-                    setreg(key);
-                    setShowregs(false);
+                    setSelectedRegion(key);
+                    setIsShowingRegions(false);
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      setreg(key);
-                      setShowregs(false);
+                      setSelectedRegion(key);
+                      setIsShowingRegions(false);
                     }
                   }}
                 >
@@ -335,7 +340,7 @@ export const App = () => {
             className="sort__button"
             onClick={() =>
               setShowSort((prev) => {
-                if (showregs) setShowregs(false);
+                if (isShowingRegions) setIsShowingRegions(false);
                 return !prev;
               })
             }
@@ -524,7 +529,7 @@ export const App = () => {
 
         {/* Muestra cartas cargando */}
         <section>
-          {(ldr || fltr) && (
+          {(isLoading || isFiltered) && (
             <div className="grid" aria-hidden="true">
               {Array.from({ length: 6 }, (_, index) => {
                 return (
@@ -542,7 +547,7 @@ export const App = () => {
             </div>
           )}
           {/* Prints cards */}
-          {!fltr && !ldr && finalResult.length > 0 && (
+          {!isFiltered && !isLoading && finalResult.length > 0 && (
             <ul className="grid" data-testid="lista">
               {finalResult.map((res) => {
                 const customStyles: any = {
@@ -558,13 +563,13 @@ export const App = () => {
                         </div>
                         <div className="card__tag">
                           <img
-                            src={icns[res.types[0].type.name]}
+                            src={iconos[res.types[0].type.name]}
                             className="card__type"
                             alt={`${res.types[0].type.name} primary type`}
                           />
                           {res.types[1] && (
                             <img
-                              src={icns[res.types[1].type.name]}
+                              src={iconos[res.types[1].type.name]}
                               className="card__type"
                               alt={`${res.types[1].type.name} secondary type`}
                             />
@@ -669,7 +674,7 @@ export const App = () => {
             </ul>
           )}
         </section>
-        {!ldr && finalResult.length === 0 && (
+        {!isLoading && finalResult.length === 0 && (
           <p className="noresults">No results for "{busqueda}"</p>
         )}
       </main>

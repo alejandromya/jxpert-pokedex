@@ -153,7 +153,7 @@ describe("App Component", () => {
     expect(bulbasaurName).toBeInTheDocument();
   });
 
-  test.only("comparamos el sort by de dos pokemons", async () => {
+  test("comparamos el sort by de dos pokemons", async () => {
     const mockFetch = vi.fn();
     globalThis.fetch = mockFetch;
 

@@ -39,15 +39,17 @@ type Pokemon = {
 type Stats = {
   base_stat: number;
   stat: {
-    name:
-      | "hp"
-      | "attack"
-      | "defense"
-      | "special-attack"
-      | "special-defense"
-      | "speed";
+    name: StatName;
   };
 };
+
+type StatName =
+  | "hp"
+  | "attack"
+  | "defense"
+  | "special-attack"
+  | "special-defense"
+  | "speed";
 
 type PokemonType = {
   type: {
@@ -101,7 +103,7 @@ export const App = () => {
   const [selectedRegion, setSelectedRegion] = useState<string>("kanto");
   const [isShowingRegions, setIsShowingRegions] = useState<boolean>(false);
   const [isShowingSortBy, setIsShowingSortBy] = useState<boolean>(false);
-  const [sortedBy, setSortedBy] = useState<string>("default");
+  const [sortedBy, setSortedBy] = useState<StatName | "default">("default");
 
   useEffect(() => {
     /**

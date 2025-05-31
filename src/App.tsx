@@ -82,16 +82,68 @@ const ICON_POKEMON_TYPE: Icons = {
   water,
 };
 
-const REGIONS: string[] = [
-  "kanto",
-  "johto",
-  "hoenn",
-  "sinnoh",
-  "unova",
-  "kalos",
-  "alola",
-  "galar",
-  "paldea",
+type Region = {
+  name: RegionName;
+  regionStart: number;
+  regionEnd: number;
+};
+type RegionName =
+  | "kanto"
+  | "johto"
+  | "hoenn"
+  | "sinnoh"
+  | "unova"
+  | "kalos"
+  | "alola"
+  | "galar"
+  | "paldea";
+
+const REGIONS: Region[] = [
+  {
+    name: "kanto",
+    regionStart: 0,
+    regionEnd: 151,
+  },
+  {
+    name: "johto",
+    regionStart: 151,
+    regionEnd: 251,
+  },
+  {
+    name: "hoenn",
+    regionStart: 251,
+    regionEnd: 386,
+  },
+  {
+    name: "sinnoh",
+    regionStart: 386,
+    regionEnd: 494,
+  },
+  {
+    name: "unova",
+    regionStart: 494,
+    regionEnd: 649,
+  },
+  {
+    name: "kalos",
+    regionStart: 649,
+    regionEnd: 721,
+  },
+  {
+    name: "alola",
+    regionStart: 721,
+    regionEnd: 809,
+  },
+  {
+    name: "galar",
+    regionStart: 809,
+    regionEnd: 905,
+  },
+  {
+    name: "paldea",
+    regionStart: 905,
+    regionEnd: 1025,
+  },
 ];
 
 export const App = () => {
@@ -100,11 +152,18 @@ export const App = () => {
   const [filteredPokemon, setFilteredPokemon] = useState<Pokemon[]>([]);
   const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
   const [searchingText, setSearchingTest] = useState<string>("");
-  const [selectedRegion, setSelectedRegion] = useState<string>("kanto");
+  const [selectedRegion, setSelectedRegion] = useState<RegionName>("kanto");
   const [isShowingRegions, setIsShowingRegions] = useState<boolean>(false);
   const [isShowingSortBy, setIsShowingSortBy] = useState<boolean>(false);
   const [sortedBy, setSortedBy] = useState<StatName | "default">("default");
 
+  const getSelectedRegion = (regionName: RegionName) => {
+    const region = REGIONS.find((region) => region.name === regionName);
+    if (region) {
+      return region;
+    }
+    return REGIONS.find((region) => region.name === "kanto")!;
+  };
   useEffect(() => {
     /**
      *  Carga de datos de Pokémons y gestión de estado de cargando.
@@ -113,40 +172,13 @@ export const App = () => {
       setIsLoading(true);
       setIsFilteringByText(true);
 
-      let regStart, regEnd;
-      if (selectedRegion === "kanto") {
-        regStart = 0;
-        regEnd = 151;
-      } else if (selectedRegion === "johto") {
-        regStart = 151;
-        regEnd = 251;
-      } else if (selectedRegion === "hoenn") {
-        regStart = 251;
-        regEnd = 386;
-      } else if (selectedRegion === "sinnoh") {
-        regStart = 386;
-        regEnd = 494;
-      } else if (selectedRegion === "unova") {
-        regStart = 494;
-        regEnd = 649;
-      } else if (selectedRegion === "kalos") {
-        regStart = 649;
-        regEnd = 721;
-      } else if (selectedRegion === "alola") {
-        regStart = 721;
-        regEnd = 809;
-      } else if (selectedRegion === "galar") {
-        regStart = 809;
-        regEnd = 905;
-      } else if (selectedRegion === "paldea") {
-        regStart = 905;
-        regEnd = 1025;
-      } else {
-        regStart = 0;
-        regEnd = 151;
-      }
+      const urlOffset = getSelectedRegion(selectedRegion)?.regionStart;
+      const urlLimit =
+        getSelectedRegion(selectedRegion)?.regionEnd -
+        getSelectedRegion(selectedRegion)?.regionStart;
+
       const { results }: any = await fetch(
-        `https://pokeapi.co/api/v2/pokemon?offset=${regStart}&limit=${regEnd}`,
+        `https://pokeapi.co/api/v2/pokemon?offset=${urlOffset}&limit=${urlLimit}`,
       ).then((res) => res.json());
 
       const result = await Promise.all(
@@ -309,25 +341,25 @@ export const App = () => {
               hidden={!isShowingRegions}
               className={`dropdown__list ${!isShowingRegions ? "hide" : ""}`}
             >
-              {REGIONS.map((key) => (
+              {REGIONS.map((region) => (
                 <li
-                  key={key}
+                  key={region.name}
                   role="radio"
-                  aria-checked={selectedRegion === key}
+                  aria-checked={selectedRegion === region.name}
                   tabIndex={0}
-                  className={selectedRegion === key ? "active" : ""}
+                  className={selectedRegion === region.name ? "active" : ""}
                   onClick={() => {
-                    setSelectedRegion(key);
+                    setSelectedRegion(region.name);
                     setIsShowingRegions(false);
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      setSelectedRegion(key);
+                      setSelectedRegion(region.name);
                       setIsShowingRegions(false);
                     }
                   }}
                 >
-                  {key}
+                  {region.name}
                 </li>
               ))}
             </ol>

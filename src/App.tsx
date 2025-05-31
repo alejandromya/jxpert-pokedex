@@ -27,7 +27,7 @@ type Icons = {
   [key: string]: string;
 };
 
-const iconos: Icons = {
+const ICON_POKEMON_TYPE: Icons = {
   bug,
   dark,
   dragon,
@@ -48,7 +48,7 @@ const iconos: Icons = {
   water,
 };
 
-const regiones: string[] = [
+const REGIONS: string[] = [
   "kanto",
   "johto",
   "hoenn",
@@ -62,22 +62,23 @@ const regiones: string[] = [
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isFiltered, setIsFiltered] = useState<boolean>(false);
-  const [result, setResult] = useState<any>([]);
-  const [finalResult, setFinalResult] = useState<any>([]);
-  const [busqueda, setBusqueda] = useState<any>("");
+  const [isFilteringByText, setIsFilteringByText] = useState<boolean>(false);
+  const [filteredPokemon, setFilteredPokemon] = useState<any>([]);
+  const [allPokemons, setAllPokemons] = useState<any>([]);
+  const [searchingText, setSearchingTest] = useState<string>("");
   const [selectedRegion, setSelectedRegion] = useState<string>("kanto");
   const [isShowingRegions, setIsShowingRegions] = useState<boolean>(false);
-  const [showSort, setShowSort] = useState<any>(false);
-  const [sorting, setSort] = useState<any>("default");
+  const [isShowingSortBy, setIsShowingSortBy] = useState<boolean>(false);
+  const [isSortedBy, setIsSortedBy] = useState<string>("default");
 
+  console.log(allPokemons);
   useEffect(() => {
     /**
      *  Carga de datos de Pokémons y gestión de estado de cargando.
      */
     const getData = async () => {
       setIsLoading(true);
-      setIsFiltered(true);
+      setIsFilteringByText(true);
 
       let regStart, regEnd;
       if (selectedRegion === "kanto") {
@@ -115,16 +116,14 @@ export const App = () => {
         `https://pokeapi.co/api/v2/pokemon?offset=${regStart}&limit=${regEnd}`,
       ).then((res) => res.json());
 
-      // console.log({ results });
-
       const result = await Promise.all(
         results.map(
           async ({ url }) => await fetch(url).then((res) => res.json()),
         ),
       );
-      // console.log(result);
-      setResult(result);
-      setFinalResult(result);
+
+      setFilteredPokemon(result);
+      setAllPokemons(result);
       setIsLoading(false);
     };
     getData();
@@ -133,24 +132,24 @@ export const App = () => {
    * Filters results based on input query term.
    */
   useEffect(() => {
-    setFinalResult(
-      result.filter(
+    setAllPokemons(
+      filteredPokemon.filter(
         (res) =>
-          res.name.includes(busqueda.toLowerCase()) ||
+          res.name.includes(searchingText.toLowerCase()) ||
           !!res.types.find((type) =>
-            type.type.name.startsWith(busqueda.toLowerCase()),
+            type.type.name.startsWith(searchingText.toLowerCase()),
           ),
       ),
     );
-    setIsFiltered(false);
-  }, [result[0]?.id, busqueda]);
+    setIsFilteringByText(false);
+  }, [filteredPokemon[0]?.id, searchingText]);
   /**
    * Sorts results based on selected sorting criteria.
    */
   useEffect(() => {
-    if (sorting !== "default") {
-      if (sorting === "hp") {
-        setFinalResult((prev) =>
+    if (isSortedBy !== "default") {
+      if (isSortedBy === "hp") {
+        setAllPokemons((prev) =>
           [...prev].sort((a, b) => {
             const aStat = a.stats.find((stat) => stat.stat.name === "hp");
             const bStat = b.stats.find((stat) => stat.stat.name === "hp");
@@ -158,8 +157,8 @@ export const App = () => {
           }),
         );
       }
-      if (sorting === "attack") {
-        setFinalResult((prev) =>
+      if (isSortedBy === "attack") {
+        setAllPokemons((prev) =>
           [...prev].sort((a, b) => {
             const aStat = a.stats.find((stat) => stat.stat.name === "attack");
             const bStat = b.stats.find((stat) => stat.stat.name === "attack");
@@ -167,8 +166,8 @@ export const App = () => {
           }),
         );
       }
-      if (sorting === "defense") {
-        setFinalResult((prev) =>
+      if (isSortedBy === "defense") {
+        setAllPokemons((prev) =>
           [...prev].sort((a, b) => {
             const aStat = a.stats.find((stat) => stat.stat.name === "defense");
             const bStat = b.stats.find((stat) => stat.stat.name === "defense");
@@ -176,8 +175,8 @@ export const App = () => {
           }),
         );
       }
-      if (sorting === "special-attack") {
-        setFinalResult((prev) =>
+      if (isSortedBy === "special-attack") {
+        setAllPokemons((prev) =>
           [...prev].sort((a, b) => {
             const aStat = a.stats.find(
               (stat) => stat.stat.name === "special-attack",
@@ -189,8 +188,8 @@ export const App = () => {
           }),
         );
       }
-      if (sorting === "special-defense") {
-        setFinalResult((prev) =>
+      if (isSortedBy === "special-defense") {
+        setAllPokemons((prev) =>
           [...prev].sort((a, b) => {
             const aStat = a.stats.find(
               (stat) => stat.stat.name === "special-defense",
@@ -202,8 +201,8 @@ export const App = () => {
           }),
         );
       }
-      if (sorting === "speed") {
-        setFinalResult((prev) =>
+      if (isSortedBy === "speed") {
+        setAllPokemons((prev) =>
           [...prev].sort((a, b) => {
             const aStat = a.stats.find((stat) => stat.stat.name === "speed");
             const bStat = b.stats.find((stat) => stat.stat.name === "speed");
@@ -212,14 +211,14 @@ export const App = () => {
         );
       }
     }
-    if (sorting === "default") {
-      setFinalResult((prev) =>
+    if (isSortedBy === "default") {
+      setAllPokemons((prev) =>
         [...prev].sort((a, b) => {
           return a.id - b.id;
         }),
       );
     }
-  }, [finalResult[0]?.id, sorting]);
+  }, [allPokemons[0]?.id, isSortedBy]);
 
   return (
     <div className="layout">
@@ -256,8 +255,8 @@ export const App = () => {
           <input
             type="text"
             placeholder="Search a Pokémon..."
-            value={busqueda}
-            onChange={(e) => setBusqueda(e.target.value)}
+            value={searchingText}
+            onChange={(e) => setSearchingTest(e.target.value)}
           />
           {/* Shows regions */}
           <div className="dropdown">
@@ -270,8 +269,8 @@ export const App = () => {
               className={`dropdown__button ${isShowingRegions ? "active" : ""}`}
               onClick={() =>
                 setIsShowingRegions((prev) => {
-                  if (showSort) {
-                    setShowSort(false);
+                  if (isShowingSortBy) {
+                    setIsShowingSortBy(false);
                   }
                   return !prev;
                 })
@@ -307,7 +306,7 @@ export const App = () => {
               hidden={!isShowingRegions}
               className={`dropdown__list ${!isShowingRegions ? "hide" : ""}`}
             >
-              {regiones.map((key) => (
+              {REGIONS.map((key) => (
                 <li
                   key={key}
                   role="radio"
@@ -336,10 +335,10 @@ export const App = () => {
             aria-haspopup="listbox"
             aria-controls="sort-list"
             aria-label="Sort by"
-            aria-expanded={showSort}
+            aria-expanded={isShowingSortBy}
             className="sort__button"
             onClick={() =>
-              setShowSort((prev) => {
+              setIsShowingSortBy((prev) => {
                 if (isShowingRegions) setIsShowingRegions(false);
                 return !prev;
               })
@@ -352,7 +351,9 @@ export const App = () => {
               viewBox="0 0 24 24"
               fill="none"
               stroke={
-                showSort ? "var(--color-accent)" : "var(--color-neutral-700)"
+                isShowingSortBy
+                  ? "var(--color-accent)"
+                  : "var(--color-neutral-700)"
               }
               strokeWidth="2"
               strokeLinecap="round"
@@ -368,7 +369,7 @@ export const App = () => {
           </button>
 
           {/* Muestra el menú de ordenación */}
-          {showSort && (
+          {isShowingSortBy && (
             <article className="sort__wrapper">
               <h3 className="sort__title">Sort by</h3>
               <div className="sort__items" role="listbox" id="sort-list">
@@ -377,17 +378,17 @@ export const App = () => {
                   aria-label="Default"
                   tabIndex={0}
                   className={`sort__pill ${
-                    sorting === "default" ? "active" : ""
+                    isSortedBy === "default" ? "active" : ""
                   }`}
-                  aria-checked={sorting === "default"}
+                  aria-checked={isSortedBy === "default"}
                   onClick={() => {
-                    setSort("default");
-                    setShowSort(false);
+                    setIsSortedBy("default");
+                    setIsShowingSortBy(false);
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      setSort("default");
-                      setShowSort(false);
+                      setIsSortedBy("default");
+                      setIsShowingSortBy(false);
                     }
                   }}
                 >
@@ -398,16 +399,16 @@ export const App = () => {
                   role="radio"
                   aria-label="Health points"
                   tabIndex={0}
-                  className={`sort__pill ${sorting === "hp" ? "active" : ""}`}
-                  aria-checked={sorting === "hp"}
+                  className={`sort__pill ${isSortedBy === "hp" ? "active" : ""}`}
+                  aria-checked={isSortedBy === "hp"}
                   onClick={() => {
-                    setSort("hp");
-                    setShowSort(false);
+                    setIsSortedBy("hp");
+                    setIsShowingSortBy(false);
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      setSort("hp");
-                      setShowSort(false);
+                      setIsSortedBy("hp");
+                      setIsShowingSortBy(false);
                     }
                   }}
                 >
@@ -419,17 +420,17 @@ export const App = () => {
                   aria-label="Attack"
                   tabIndex={0}
                   className={`sort__pill ${
-                    sorting === "attack" ? "active" : ""
+                    isSortedBy === "attack" ? "active" : ""
                   }`}
-                  aria-checked={sorting === "attack"}
+                  aria-checked={isSortedBy === "attack"}
                   onClick={() => {
-                    setSort("attack");
-                    setShowSort(false);
+                    setIsSortedBy("attack");
+                    setIsShowingSortBy(false);
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      setSort("attack");
-                      setShowSort(false);
+                      setIsSortedBy("attack");
+                      setIsShowingSortBy(false);
                     }
                   }}
                 >
@@ -441,17 +442,17 @@ export const App = () => {
                   aria-label="Defense"
                   tabIndex={0}
                   className={`sort__pill ${
-                    sorting === "defense" ? "active" : ""
+                    isSortedBy === "defense" ? "active" : ""
                   }`}
-                  aria-checked={sorting === "defense"}
+                  aria-checked={isSortedBy === "defense"}
                   onClick={() => {
-                    setSort("defense");
-                    setShowSort(false);
+                    setIsSortedBy("defense");
+                    setIsShowingSortBy(false);
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      setSort("defense");
-                      setShowSort(false);
+                      setIsSortedBy("defense");
+                      setIsShowingSortBy(false);
                     }
                   }}
                 >
@@ -462,17 +463,17 @@ export const App = () => {
                   aria-label="Special attack"
                   tabIndex={0}
                   className={`sort__pill ${
-                    sorting === "specialAttack" ? "active" : ""
+                    isSortedBy === "specialAttack" ? "active" : ""
                   }`}
-                  aria-checked={sorting === "specialAttack"}
+                  aria-checked={isSortedBy === "specialAttack"}
                   onClick={() => {
-                    setSort("specialAttack");
-                    setShowSort(false);
+                    setIsSortedBy("specialAttack");
+                    setIsShowingSortBy(false);
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      setSort("specialAttack");
-                      setShowSort(false);
+                      setIsSortedBy("specialAttack");
+                      setIsShowingSortBy(false);
                     }
                   }}
                 >
@@ -484,17 +485,17 @@ export const App = () => {
                   aria-label="Special defense"
                   tabIndex={0}
                   className={`sort__pill ${
-                    sorting === "specialDefense" ? "active" : ""
+                    isSortedBy === "specialDefense" ? "active" : ""
                   }`}
-                  aria-checked={sorting === "specialDefense"}
+                  aria-checked={isSortedBy === "specialDefense"}
                   onClick={() => {
-                    setSort("specialDefense");
-                    setShowSort(false);
+                    setIsSortedBy("specialDefense");
+                    setIsShowingSortBy(false);
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      setSort("specialDefense");
-                      setShowSort(false);
+                      setIsSortedBy("specialDefense");
+                      setIsShowingSortBy(false);
                     }
                   }}
                 >
@@ -505,17 +506,17 @@ export const App = () => {
                   aria-label="Speed"
                   tabIndex={0}
                   className={`sort__pill ${
-                    sorting === "speed" ? "active" : ""
+                    isSortedBy === "speed" ? "active" : ""
                   }`}
-                  aria-checked={sorting === "speed"}
+                  aria-checked={isSortedBy === "speed"}
                   onClick={() => {
-                    setSort("speed");
-                    setShowSort(false);
+                    setIsSortedBy("speed");
+                    setIsShowingSortBy(false);
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      setSort("speed");
-                      setShowSort(false);
+                      setIsSortedBy("speed");
+                      setIsShowingSortBy(false);
                     }
                   }}
                 >
@@ -529,7 +530,7 @@ export const App = () => {
 
         {/* Muestra cartas cargando */}
         <section>
-          {(isLoading || isFiltered) && (
+          {(isLoading || isFilteringByText) && (
             <div className="grid" aria-hidden="true">
               {Array.from({ length: 6 }, (_, index) => {
                 return (
@@ -547,9 +548,9 @@ export const App = () => {
             </div>
           )}
           {/* Prints cards */}
-          {!isFiltered && !isLoading && finalResult.length > 0 && (
+          {!isFilteringByText && !isLoading && allPokemons.length > 0 && (
             <ul className="grid" data-testid="lista">
-              {finalResult.map((res) => {
+              {allPokemons.map((res) => {
                 const customStyles: any = {
                   "--color-type": `var(--color-${res.types[0].type.name}`,
                 };
@@ -563,13 +564,13 @@ export const App = () => {
                         </div>
                         <div className="card__tag">
                           <img
-                            src={iconos[res.types[0].type.name]}
+                            src={ICON_POKEMON_TYPE[res.types[0].type.name]}
                             className="card__type"
                             alt={`${res.types[0].type.name} primary type`}
                           />
                           {res.types[1] && (
                             <img
-                              src={iconos[res.types[1].type.name]}
+                              src={ICON_POKEMON_TYPE[res.types[1].type.name]}
                               className="card__type"
                               alt={`${res.types[1].type.name} secondary type`}
                             />
@@ -674,8 +675,8 @@ export const App = () => {
             </ul>
           )}
         </section>
-        {!isLoading && finalResult.length === 0 && (
-          <p className="noresults">No results for "{busqueda}"</p>
+        {!isLoading && allPokemons.length === 0 && (
+          <p className="noresults">No results for "{searchingText}"</p>
         )}
       </main>
 

@@ -148,7 +148,7 @@ const REGIONS: Region[] = [
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isFilteringByText, setIsFilteringByText] = useState<boolean>(false);
+
   const [filteredPokemon, setFilteredPokemon] = useState<Pokemon[]>([]);
   const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
   const [searchingText, setSearchingTest] = useState<string>("");
@@ -184,7 +184,6 @@ export const App = () => {
      */
     const getData = async () => {
       setIsLoading(true);
-      setIsFilteringByText(true);
 
       const urlOffset = getSelectedRegion(selectedRegion)?.regionStart;
       const urlLimit =
@@ -212,8 +211,7 @@ export const App = () => {
           ),
       ),
     );
-    setIsFilteringByText(false);
-  }, [filteredPokemon[0]?.id, searchingText]);
+  }, [searchingText]);
   /**
    * Sorts results based on selected sorting criteria.
    */
@@ -571,7 +569,7 @@ export const App = () => {
 
         {/* Muestra cartas cargando */}
         <section>
-          {(isLoading || isFilteringByText) && (
+          {isLoading && (
             <div className="grid" aria-hidden="true">
               {Array.from({ length: 6 }, (_, index) => {
                 return (
@@ -589,7 +587,7 @@ export const App = () => {
             </div>
           )}
           {/* Prints cards */}
-          {!isFilteringByText && !isLoading && allPokemons.length > 0 && (
+          {!isLoading && allPokemons.length > 0 && (
             <ul className="grid" data-testid="lista">
               {allPokemons.map((res) => {
                 const customStyles: any = {

@@ -82,6 +82,13 @@ const ICON_POKEMON_TYPE: Icons = {
   water,
 };
 
+type Results = {
+  url: string;
+};
+type APIResponseURL = {
+  results: Results[];
+};
+
 type Region = {
   name: RegionName;
   regionStart: number;
@@ -166,7 +173,7 @@ export const App = () => {
   };
 
   const pokeAPICall = async (urlOffset: number, urlLimit: number) => {
-    const { results }: any = await fetch(
+    const { results }: APIResponseURL = await fetch(
       `https://pokeapi.co/api/v2/pokemon?offset=${urlOffset}&limit=${urlLimit}`,
     ).then((res) => res.json());
 

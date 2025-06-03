@@ -209,16 +209,21 @@ export const App = () => {
   /**
    * Filters results based on input query term.
    */
-  useEffect(() => {
-    setAllPokemons(
-      filteredPokemon.filter(
-        (res) =>
-          res.name.includes(searchingText.toLowerCase()) ||
-          !!res.types.find((type) =>
-            type.type.name.startsWith(searchingText.toLowerCase()),
-          ),
-      ),
+
+  const filterPokemon = () => {
+    const filteredPoks = filteredPokemon.filter(
+      (res) =>
+        res.name.includes(searchingText.toLowerCase()) ||
+        !!res.types.find((type) =>
+          type.type.name.startsWith(searchingText.toLowerCase()),
+        ),
     );
+    return filteredPoks;
+  };
+
+  useEffect(() => {
+    setAllPokemons(filterPokemon());
+
     setIsFilteringByText(false);
   }, [filteredPokemon[0]?.id, searchingText]);
   /**

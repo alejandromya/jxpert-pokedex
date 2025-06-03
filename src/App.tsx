@@ -164,6 +164,20 @@ export const App = () => {
     }
     return REGIONS.find((region) => region.name === "kanto")!;
   };
+
+  const pokeAPICall = async (urlOffset: number, urlLimit: number) => {
+    const { results }: any = await fetch(
+      `https://pokeapi.co/api/v2/pokemon?offset=${urlOffset}&limit=${urlLimit}`,
+    ).then((res) => res.json());
+
+    const pokeResponse = await Promise.all(
+      results.map(
+        async ({ url }) => await fetch(url).then((res) => res.json()),
+      ),
+    );
+    return pokeResponse as Pokemon[];
+  };
+
   useEffect(() => {
     /**
      *  Carga de datos de Pokémons y gestión de estado de cargando.
@@ -177,18 +191,10 @@ export const App = () => {
         getSelectedRegion(selectedRegion)?.regionEnd -
         getSelectedRegion(selectedRegion)?.regionStart;
 
-      const { results }: any = await fetch(
-        `https://pokeapi.co/api/v2/pokemon?offset=${urlOffset}&limit=${urlLimit}`,
-      ).then((res) => res.json());
+      const pokeResponse = await pokeAPICall(urlOffset, urlLimit);
 
-      const result = await Promise.all(
-        results.map(
-          async ({ url }) => await fetch(url).then((res) => res.json()),
-        ),
-      );
-
-      setFilteredPokemon(result);
-      setAllPokemons(result);
+      setFilteredPokemon(pokeResponse);
+      setAllPokemons(pokeResponse);
       setIsLoading(false);
     };
     getData();

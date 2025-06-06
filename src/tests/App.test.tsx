@@ -153,7 +153,7 @@ describe("App Component", () => {
     expect(bulbasaurName).toBeInTheDocument();
   });
 
-  test("comparamos el sort by de dos pokemons", async () => {
+  test("comparamos el sort by de HP dos pokemons", async () => {
     const mockFetch = vi.fn();
     globalThis.fetch = mockFetch;
 
@@ -179,6 +179,180 @@ describe("App Component", () => {
     await userEvent.click(radio);
 
     //bulbasur 45HP servine 60HP
+
+    const listAfterOrder = await screen.findByTestId("lista");
+    const firstElementAfter = listAfterOrder.children[0];
+    const secondElementAfter = listAfterOrder.children[1];
+
+    expect(firstElementAfter).toHaveTextContent("servine");
+    expect(secondElementAfter).toHaveTextContent("bulbasaur");
+  });
+
+  test("comparamos el sort by de Attack dos pokemons", async () => {
+    const mockFetch = vi.fn();
+    globalThis.fetch = mockFetch;
+
+    mockFetch.mockImplementation(getGenerateMockFetch().fetchMock2);
+
+    render(<App />);
+
+    const listBeforeOrder = await screen.findByTestId("lista");
+    const firstElementBefore = listBeforeOrder.children[0];
+    const secondElementBefore = listBeforeOrder.children[1];
+
+    expect(firstElementBefore).toHaveTextContent("bulbasaur");
+    expect(secondElementBefore).toHaveTextContent("servine");
+
+    const combobox = await screen.findByRole("combobox", {
+      name: "Sort by",
+    });
+    await userEvent.click(combobox);
+
+    const radio = await screen.findByRole("radio", {
+      name: "Attack",
+    });
+    await userEvent.click(radio);
+
+    //bulbasur 49AT servine 60
+
+    const listAfterOrder = await screen.findByTestId("lista");
+    const firstElementAfter = listAfterOrder.children[0];
+    const secondElementAfter = listAfterOrder.children[1];
+
+    expect(firstElementAfter).toHaveTextContent("servine");
+    expect(secondElementAfter).toHaveTextContent("bulbasaur");
+  });
+
+  test("comparamos el sort by de Defense dos pokemons", async () => {
+    const mockFetch = vi.fn();
+    globalThis.fetch = mockFetch;
+
+    mockFetch.mockImplementation(getGenerateMockFetch().fetchMock2);
+
+    render(<App />);
+
+    const listBeforeOrder = await screen.findByTestId("lista");
+    const firstElementBefore = listBeforeOrder.children[0];
+    const secondElementBefore = listBeforeOrder.children[1];
+
+    expect(firstElementBefore).toHaveTextContent("bulbasaur");
+    expect(secondElementBefore).toHaveTextContent("servine");
+
+    const combobox = await screen.findByRole("combobox", {
+      name: "Sort by",
+    });
+    await userEvent.click(combobox);
+
+    const radio = await screen.findByRole("radio", {
+      name: "Defense",
+    });
+    await userEvent.click(radio);
+
+    //bulbasur 49DF servine 75
+
+    const listAfterOrder = await screen.findByTestId("lista");
+    const firstElementAfter = listAfterOrder.children[0];
+    const secondElementAfter = listAfterOrder.children[1];
+
+    expect(firstElementAfter).toHaveTextContent("servine");
+    expect(secondElementAfter).toHaveTextContent("bulbasaur");
+  });
+
+  test("comparamos el sort by de Special Attack dos pokemons", async () => {
+    const mockFetch = vi.fn();
+    globalThis.fetch = mockFetch;
+
+    mockFetch.mockImplementation(getGenerateMockFetch().fetchMock2);
+
+    render(<App />);
+
+    const listBeforeOrder = await screen.findByTestId("lista");
+    const firstElementBefore = listBeforeOrder.children[0];
+    const secondElementBefore = listBeforeOrder.children[1];
+
+    expect(firstElementBefore).toHaveTextContent("bulbasaur");
+    expect(secondElementBefore).toHaveTextContent("servine");
+
+    const combobox = await screen.findByRole("combobox", {
+      name: "Sort by",
+    });
+    await userEvent.click(combobox);
+
+    const radio = await screen.findByRole("radio", {
+      name: "Special attack",
+    });
+    await userEvent.click(radio);
+
+    //bulbasur 65Spa servine 60
+
+    const listAfterOrder = await screen.findByTestId("lista");
+    const firstElementAfter = listAfterOrder.children[0];
+    const secondElementAfter = listAfterOrder.children[1];
+
+    expect(firstElementAfter).toHaveTextContent("bulbasaur");
+    expect(secondElementAfter).toHaveTextContent("servine");
+  });
+
+  test("comparamos el sort by de Special Defense dos pokemons", async () => {
+    const mockFetch = vi.fn();
+    globalThis.fetch = mockFetch;
+
+    mockFetch.mockImplementation(getGenerateMockFetch().fetchMock2);
+
+    render(<App />);
+
+    const listBeforeOrder = await screen.findByTestId("lista");
+    const firstElementBefore = listBeforeOrder.children[0];
+    const secondElementBefore = listBeforeOrder.children[1];
+
+    expect(firstElementBefore).toHaveTextContent("bulbasaur");
+    expect(secondElementBefore).toHaveTextContent("servine");
+
+    const combobox = await screen.findByRole("combobox", {
+      name: "Sort by",
+    });
+    await userEvent.click(combobox);
+
+    const radio = await screen.findByRole("radio", {
+      name: "Special defense",
+    });
+    await userEvent.click(radio);
+
+    //bulbasur 65Spd  servine 75
+
+    const listAfterOrder = await screen.findByTestId("lista");
+    const firstElementAfter = listAfterOrder.children[0];
+    const secondElementAfter = listAfterOrder.children[1];
+
+    expect(firstElementAfter).toHaveTextContent("servine");
+    expect(secondElementAfter).toHaveTextContent("bulbasaur");
+  });
+
+  test("comparamos el sort by de Speed dos pokemons", async () => {
+    const mockFetch = vi.fn();
+    globalThis.fetch = mockFetch;
+
+    mockFetch.mockImplementation(getGenerateMockFetch().fetchMock2);
+
+    render(<App />);
+
+    const listBeforeOrder = await screen.findByTestId("lista");
+    const firstElementBefore = listBeforeOrder.children[0];
+    const secondElementBefore = listBeforeOrder.children[1];
+
+    expect(firstElementBefore).toHaveTextContent("bulbasaur");
+    expect(secondElementBefore).toHaveTextContent("servine");
+
+    const combobox = await screen.findByRole("combobox", {
+      name: "Sort by",
+    });
+    await userEvent.click(combobox);
+
+    const radio = await screen.findByRole("radio", {
+      name: "Speed",
+    });
+    await userEvent.click(radio);
+    //bulbasur 45Spd  servine 83
 
     const listAfterOrder = await screen.findByTestId("lista");
     const firstElementAfter = listAfterOrder.children[0];

@@ -49,7 +49,8 @@ type StatName =
   | "defense"
   | "special-attack"
   | "special-defense"
-  | "speed";
+  | "speed"
+  | "default";
 
 type PokemonType = {
   type: {
@@ -102,7 +103,6 @@ const REGIONS = [
 ] as const;
 
 type RegionName = (typeof REGIONS)[number]["name"];
-//type Region = (typeof REGIONS)[number];
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -181,47 +181,30 @@ export const App = () => {
    * Sorts results based on selected sorting criteria.
    */
 
-  const sortByStat = (statName: Stats["stat"]["name"]) => {
-    setAllPokemons((prev) =>
-      [...prev].sort((pokemon1, pokemon2) => {
-        const pokemon1Stats =
-          pokemon1.stats.find((stats) => stats.stat.name === statName)
-            ?.base_stat ?? 0;
-        const pokemon2Stats =
-          pokemon2.stats.find((stats) => stats.stat.name === statName)
-            ?.base_stat ?? 0;
+  const sortByStat = (pokemons: Pokemon[], statName: Stats["stat"]["name"]) => {
+    if (statName === "default") {
+      const pokemonsOrdered = [...pokemons].sort((pokemon1, pokemon2) => {
+        return pokemon1.id - pokemon2.id;
+      });
+      return pokemonsOrdered;
+    }
+    const pokemonsOrdered = [...pokemons].sort((pokemon1, pokemon2) => {
+      const pokemon1Stats =
+        pokemon1.stats.find((stats) => stats.stat.name === statName)
+          ?.base_stat ?? 0;
+      const pokemon2Stats =
+        pokemon2.stats.find((stats) => stats.stat.name === statName)
+          ?.base_stat ?? 0;
 
-        return pokemon2Stats - pokemon1Stats;
-      }),
-    );
+      return pokemon2Stats - pokemon1Stats;
+    });
+
+    return pokemonsOrdered;
   };
 
   useEffect(() => {
-    if (sortedBy !== "default") {
-      sortByStat("hp");
-      if (sortedBy === "attack") {
-        sortByStat("attack");
-      }
-      if (sortedBy === "defense") {
-        sortByStat("defense");
-      }
-      if (sortedBy === "special-attack") {
-        sortByStat("special-attack");
-      }
-      if (sortedBy === "special-defense") {
-        sortByStat("special-defense");
-      }
-      if (sortedBy === "speed") {
-        sortByStat("speed");
-      }
-    }
-    if (sortedBy === "default") {
-      setAllPokemons((prev) =>
-        [...prev].sort((a, b) => {
-          return a.id - b.id;
-        }),
-      );
-    }
+    const pokemons: Pokemon[] = sortByStat(allPokemons, sortedBy);
+    setAllPokemons(pokemons);
   }, [allPokemons[0]?.id, sortedBy]);
 
   return (

@@ -89,69 +89,20 @@ type APIResponseURL = {
   results: Results[];
 };
 
-type Region = {
-  name: RegionName;
-  regionStart: number;
-  regionEnd: number;
-};
-type RegionName =
-  | "kanto"
-  | "johto"
-  | "hoenn"
-  | "sinnoh"
-  | "unova"
-  | "kalos"
-  | "alola"
-  | "galar"
-  | "paldea";
+const REGIONS = [
+  { name: "kanto", regionStart: 0, regionEnd: 151 },
+  { name: "johto", regionStart: 151, regionEnd: 251 },
+  { name: "hoenn", regionStart: 251, regionEnd: 386 },
+  { name: "sinnoh", regionStart: 386, regionEnd: 494 },
+  { name: "unova", regionStart: 494, regionEnd: 649 },
+  { name: "kalos", regionStart: 649, regionEnd: 721 },
+  { name: "alola", regionStart: 721, regionEnd: 809 },
+  { name: "galar", regionStart: 809, regionEnd: 905 },
+  { name: "paldea", regionStart: 905, regionEnd: 1025 },
+] as const;
 
-const REGIONS: Region[] = [
-  {
-    name: "kanto",
-    regionStart: 0,
-    regionEnd: 151,
-  },
-  {
-    name: "johto",
-    regionStart: 151,
-    regionEnd: 251,
-  },
-  {
-    name: "hoenn",
-    regionStart: 251,
-    regionEnd: 386,
-  },
-  {
-    name: "sinnoh",
-    regionStart: 386,
-    regionEnd: 494,
-  },
-  {
-    name: "unova",
-    regionStart: 494,
-    regionEnd: 649,
-  },
-  {
-    name: "kalos",
-    regionStart: 649,
-    regionEnd: 721,
-  },
-  {
-    name: "alola",
-    regionStart: 721,
-    regionEnd: 809,
-  },
-  {
-    name: "galar",
-    regionStart: 809,
-    regionEnd: 905,
-  },
-  {
-    name: "paldea",
-    regionStart: 905,
-    regionEnd: 1025,
-  },
-];
+type RegionName = (typeof REGIONS)[number]["name"];
+//type Region = (typeof REGIONS)[number];
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -177,12 +128,12 @@ export const App = () => {
       `https://pokeapi.co/api/v2/pokemon?offset=${urlOffset}&limit=${urlLimit}`,
     ).then((res) => res.json());
 
-    const pokeResponse = await Promise.all(
+    const pokeResponse: Pokemon[] = await Promise.all(
       results.map(
         async ({ url }) => await fetch(url).then((res) => res.json()),
       ),
     );
-    return pokeResponse as Pokemon[];
+    return pokeResponse;
   };
 
   useEffect(() => {

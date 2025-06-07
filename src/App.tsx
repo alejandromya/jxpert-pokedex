@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import bug from "./assets/iconos/bug.svg";
 import dark from "./assets/iconos/dark.svg";
 import dragon from "./assets/iconos/dragon.svg";
@@ -19,13 +19,14 @@ import steel from "./assets/iconos/steel.svg";
 import water from "./assets/iconos/water.svg";
 import pokeball from "./assets/iconos/pokeball.svg";
 import { SortByButton } from "./componentes/SortByButton";
+import usePokemons from "./componentes/usePokemons";
 //import { usePokemons } from "./componentes/usePokemons";
 
 /**
  *  Iconos de los tipos de Pokémon
  */
 
-type Pokemon = {
+export type Pokemon = {
   id: number;
   name: string;
   sprites: {
@@ -39,14 +40,14 @@ type Pokemon = {
   stats: Stats[];
 };
 
-type Stats = {
+export type Stats = {
   base_stat: number;
   stat: {
     name: StatName;
   };
 };
 
-type StatName =
+export type StatName =
   | "hp"
   | "attack"
   | "defense"
@@ -55,13 +56,13 @@ type StatName =
   | "speed"
   | "default";
 
-type PokemonType = {
+export type PokemonType = {
   type: {
     name: string;
   };
 };
 
-type Icons = {
+export type Icons = {
   [key: string]: string;
 };
 
@@ -86,14 +87,14 @@ const ICON_POKEMON_TYPE: Icons = {
   water,
 };
 
-type Results = {
+export type Results = {
   url: string;
 };
-type APIResponseURL = {
+export type APIResponseURL = {
   results: Results[];
 };
 
-const REGIONS = [
+export const REGIONS = [
   { name: "kanto", regionStart: 0, regionEnd: 151 },
   { name: "johto", regionStart: 151, regionEnd: 251 },
   { name: "hoenn", regionStart: 251, regionEnd: 386 },
@@ -105,110 +106,22 @@ const REGIONS = [
   { name: "paldea", regionStart: 905, regionEnd: 1025 },
 ] as const;
 
-type RegionName = (typeof REGIONS)[number]["name"];
+export type RegionName = (typeof REGIONS)[number]["name"];
 
 export const App = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isFilteringByText, setIsFilteringByText] = useState<boolean>(false);
-  const [filteredPokemon, setFilteredPokemon] = useState<Pokemon[]>([]);
-  const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
-  const [searchingText, setSearchingTest] = useState<string>("");
-  const [selectedRegion, setSelectedRegion] = useState<RegionName>("kanto");
-  const [isShowingRegions, setIsShowingRegions] = useState<boolean>(false);
-  const [isShowingSortBy, setIsShowingSortBy] = useState<boolean>(false);
-  const [sortedBy, setSortedBy] = useState<StatName | "default">("default");
-
-  const getSelectedRegion = (regionName: RegionName) => {
-    const region = REGIONS.find((region) => region.name === regionName);
-    if (region) {
-      return region;
-    }
-    return REGIONS.find((region) => region.name === "kanto")!;
-  };
-
-  const pokeAPICall = async (urlOffset: number, urlLimit: number) => {
-    const { results }: APIResponseURL = await fetch(
-      `https://pokeapi.co/api/v2/pokemon?offset=${urlOffset}&limit=${urlLimit}`,
-    ).then((res) => res.json());
-
-    const pokeResponse: Pokemon[] = await Promise.all(
-      results.map(
-        async ({ url }) => await fetch(url).then((res) => res.json()),
-      ),
-    );
-    return pokeResponse;
-  };
-
-  useEffect(() => {
-    /**
-     *  Carga de datos de Pokémons y gestión de estado de cargando.
-     */
-    const getPokemonAPIData = async () => {
-      setIsLoading(true);
-      setIsFilteringByText(true);
-
-      const urlOffset = getSelectedRegion(selectedRegion)?.regionStart;
-      const urlLimit =
-        getSelectedRegion(selectedRegion)?.regionEnd -
-        getSelectedRegion(selectedRegion)?.regionStart;
-
-      const pokeResponse = await pokeAPICall(urlOffset, urlLimit);
-
-      setFilteredPokemon(pokeResponse);
-      setAllPokemons(pokeResponse);
-      setIsLoading(false);
-    };
-    getPokemonAPIData();
-  }, [selectedRegion]);
-  /**
-   * Filters results based on input query term.
-   */
-
-  const filterPokemon = () => {
-    const filteredPoks = filteredPokemon.filter(
-      (res) =>
-        res.name.includes(searchingText.toLowerCase()) ||
-        !!res.types.find((type) =>
-          type.type.name.startsWith(searchingText.toLowerCase()),
-        ),
-    );
-    return filteredPoks;
-  };
-
-  useEffect(() => {
-    setAllPokemons(filterPokemon());
-
-    setIsFilteringByText(false);
-  }, [filteredPokemon[0]?.id, searchingText]);
-  /**
-   * Sorts results based on selected sorting criteria.
-   */
-
-  const sortByStat = (pokemons: Pokemon[], statName: Stats["stat"]["name"]) => {
-    if (statName === "default") {
-      const pokemonsOrdered = [...pokemons].sort((pokemon1, pokemon2) => {
-        return pokemon1.id - pokemon2.id;
-      });
-      return pokemonsOrdered;
-    }
-    const pokemonsOrdered = [...pokemons].sort((pokemon1, pokemon2) => {
-      const pokemon1Stats =
-        pokemon1.stats.find((stats) => stats.stat.name === statName)
-          ?.base_stat ?? 0;
-      const pokemon2Stats =
-        pokemon2.stats.find((stats) => stats.stat.name === statName)
-          ?.base_stat ?? 0;
-
-      return pokemon2Stats - pokemon1Stats;
-    });
-
-    return pokemonsOrdered;
-  };
-
-  useEffect(() => {
-    const pokemons: Pokemon[] = sortByStat(allPokemons, sortedBy);
-    setAllPokemons(pokemons);
-  }, [allPokemons[0]?.id, sortedBy]);
+  const [isShowingRegions, setIsShowingRegions] = useState(false);
+  const [isShowingSortBy, setIsShowingSortBy] = useState(false);
+  const {
+    allPokemons,
+    isLoading,
+    isFilteringByText,
+    selectedRegion,
+    searchingText,
+    sortedBy,
+    setSearchingText,
+    setSelectedRegion,
+    setSortedBy,
+  } = usePokemons();
 
   return (
     <div className="layout">
@@ -246,7 +159,7 @@ export const App = () => {
             type="text"
             placeholder="Search a Pokémon..."
             value={searchingText}
-            onChange={(e) => setSearchingTest(e.target.value)}
+            onChange={(e) => setSearchingText(e.target.value)}
           />
           {/* Shows regions */}
           <div className="dropdown">

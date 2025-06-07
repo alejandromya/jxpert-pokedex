@@ -1,66 +1,22 @@
 import { useState, useEffect } from "react";
-
-type Pokemon = {
-  id: number;
-  name: string;
-  sprites: {
-    other: {
-      "official-artwork": {
-        front_default;
-      };
-    };
-  };
-  types: PokemonType[];
-  stats: Stats[];
-};
-
-type Stats = {
-  base_stat: number;
-  stat: {
-    name: StatName;
-  };
-};
-
-type StatName =
-  | "hp"
-  | "attack"
-  | "defense"
-  | "special-attack"
-  | "special-defense"
-  | "speed"
-  | "default";
-
-type PokemonType = {
-  type: {
-    name: string;
-  };
-};
-
-type Results = {
-  url: string;
-};
-type APIResponseURL = {
-  results: Results[];
-};
-
-const REGIONS = [
-  { name: "kanto", regionStart: 0, regionEnd: 151 },
-  { name: "johto", regionStart: 151, regionEnd: 251 },
-  { name: "hoenn", regionStart: 251, regionEnd: 386 },
-  { name: "sinnoh", regionStart: 386, regionEnd: 494 },
-  { name: "unova", regionStart: 494, regionEnd: 649 },
-  { name: "kalos", regionStart: 649, regionEnd: 721 },
-  { name: "alola", regionStart: 721, regionEnd: 809 },
-  { name: "galar", regionStart: 809, regionEnd: 905 },
-  { name: "paldea", regionStart: 905, regionEnd: 1025 },
-] as const;
-
-type RegionName = (typeof REGIONS)[number]["name"];
+import {
+  APIResponseURL,
+  Pokemon,
+  RegionName,
+  REGIONS,
+  StatName,
+  Stats,
+} from "../App";
 
 export const usePokemons = () => {
+  // hacemos cositas
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isFilteringByText, setIsFilteringByText] = useState<boolean>(false);
+  const [filteredPokemon, setFilteredPokemon] = useState<Pokemon[]>([]);
   const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [searchingText, setSearchingText] = useState<string>("");
   const [selectedRegion, setSelectedRegion] = useState<RegionName>("kanto");
+  const [sortedBy, setSortedBy] = useState<StatName | "default">("default");
 
   const getSelectedRegion = (regionName: RegionName) => {
     const region = REGIONS.find((region) => region.name === regionName);
@@ -75,35 +31,97 @@ export const usePokemons = () => {
       `https://pokeapi.co/api/v2/pokemon?offset=${urlOffset}&limit=${urlLimit}`,
     ).then((res) => res.json());
 
-    const pokemonResponse: Pokemon[] = await Promise.all(
+    const pokeResponse: Pokemon[] = await Promise.all(
       results.map(
         async ({ url }) => await fetch(url).then((res) => res.json()),
       ),
     );
-    return pokemonResponse;
+    return pokeResponse;
   };
 
   useEffect(() => {
-    setIsLoading(true);
     /**
      *  Carga de datos de Pokémons y gestión de estado de cargando.
      */
     const getPokemonAPIData = async () => {
       setIsLoading(true);
+      setIsFilteringByText(true);
 
       const urlOffset = getSelectedRegion(selectedRegion)?.regionStart;
       const urlLimit =
         getSelectedRegion(selectedRegion)?.regionEnd -
         getSelectedRegion(selectedRegion)?.regionStart;
 
-      const pokemonResponse = await pokeAPICall(urlOffset, urlLimit);
+      const pokeResponse = await pokeAPICall(urlOffset, urlLimit);
 
-      setAllPokemons(pokemonResponse);
+      setFilteredPokemon(pokeResponse);
+      setAllPokemons(pokeResponse);
       setIsLoading(false);
-      console.log(allPokemons);
-      console.log(isLoading);
-      console.log(setSelectedRegion);
     };
     getPokemonAPIData();
   }, [selectedRegion]);
+  /**
+   * Filters results based on input query term.
+   */
+
+  const filterPokemon = () => {
+    const filteredPoks = filteredPokemon.filter(
+      (res) =>
+        res.name.includes(searchingText.toLowerCase()) ||
+        !!res.types.find((type) =>
+          type.type.name.startsWith(searchingText.toLowerCase()),
+        ),
+    );
+    return filteredPoks;
+  };
+
+  useEffect(() => {
+    setAllPokemons(filterPokemon());
+
+    setIsFilteringByText(false);
+  }, [filteredPokemon[0]?.id, searchingText]);
+  /**
+   * Sorts results based on selected sorting criteria.
+   */
+
+  const sortByStat = (pokemons: Pokemon[], statName: Stats["stat"]["name"]) => {
+    if (statName === "default") {
+      const pokemonsOrdered = [...pokemons].sort((pokemon1, pokemon2) => {
+        return pokemon1.id - pokemon2.id;
+      });
+      return pokemonsOrdered;
+    }
+    const pokemonsOrdered = [...pokemons].sort((pokemon1, pokemon2) => {
+      const pokemon1Stats =
+        pokemon1.stats.find((stats) => stats.stat.name === statName)
+          ?.base_stat ?? 0;
+      const pokemon2Stats =
+        pokemon2.stats.find((stats) => stats.stat.name === statName)
+          ?.base_stat ?? 0;
+
+      return pokemon2Stats - pokemon1Stats;
+    });
+
+    return pokemonsOrdered;
+  };
+
+  useEffect(() => {
+    const pokemons: Pokemon[] = sortByStat(allPokemons, sortedBy);
+    setAllPokemons(pokemons);
+  }, [allPokemons[0]?.id, sortedBy]);
+
+  // devolvemos cositas
+  return {
+    allPokemons,
+    isLoading,
+    isFilteringByText,
+    selectedRegion,
+    searchingText,
+    sortedBy,
+    setSearchingText,
+    setSelectedRegion,
+    setSortedBy,
+  };
 };
+
+export default usePokemons;

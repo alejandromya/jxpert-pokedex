@@ -174,7 +174,7 @@ describe("App Component", () => {
     await userEvent.click(combobox);
 
     const radio = await screen.findByRole("radio", {
-      name: "Health points",
+      name: "Hp",
     });
     await userEvent.click(radio);
 
@@ -279,7 +279,7 @@ describe("App Component", () => {
     await userEvent.click(combobox);
 
     const radio = await screen.findByRole("radio", {
-      name: "Special attack",
+      name: "Special-attack",
     });
     await userEvent.click(radio);
 
@@ -314,7 +314,7 @@ describe("App Component", () => {
     await userEvent.click(combobox);
 
     const radio = await screen.findByRole("radio", {
-      name: "Special defense",
+      name: "Special-defense",
     });
     await userEvent.click(radio);
 

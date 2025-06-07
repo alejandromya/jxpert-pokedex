@@ -18,6 +18,7 @@ import rock from "./assets/iconos/rock.svg";
 import steel from "./assets/iconos/steel.svg";
 import water from "./assets/iconos/water.svg";
 import pokeball from "./assets/iconos/pokeball.svg";
+import { SortByButton } from "./componentes/SortByButton";
 
 /**
  *  Iconos de los tipos de Pokémon
@@ -360,156 +361,55 @@ export const App = () => {
             <article className="sort__wrapper">
               <h3 className="sort__title">Sort by</h3>
               <div className="sort__items" role="listbox" id="sort-list">
-                <span
-                  role="radio"
-                  aria-label="Default"
-                  tabIndex={0}
-                  className={`sort__pill ${
-                    sortedBy === "default" ? "active" : ""
-                  }`}
-                  aria-checked={sortedBy === "default"}
-                  onClick={() => {
-                    setSortedBy("default");
-                    setIsShowingSortBy(false);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      setSortedBy("default");
-                      setIsShowingSortBy(false);
-                    }
-                  }}
-                >
-                  {" "}
-                  Default
-                </span>
-                <span
-                  role="radio"
-                  aria-label="Health points"
-                  tabIndex={0}
-                  className={`sort__pill ${sortedBy === "hp" ? "active" : ""}`}
-                  aria-checked={sortedBy === "hp"}
-                  onClick={() => {
-                    setSortedBy("hp");
-                    setIsShowingSortBy(false);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      setSortedBy("hp");
-                      setIsShowingSortBy(false);
-                    }
-                  }}
-                >
-                  {" "}
-                  Hp
-                </span>
-                <span
-                  role="radio"
-                  aria-label="Attack"
-                  tabIndex={0}
-                  className={`sort__pill ${
-                    sortedBy === "attack" ? "active" : ""
-                  }`}
-                  aria-checked={sortedBy === "attack"}
-                  onClick={() => {
-                    setSortedBy("attack");
-                    setIsShowingSortBy(false);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      setSortedBy("attack");
-                      setIsShowingSortBy(false);
-                    }
-                  }}
-                >
-                  {" "}
-                  At
-                </span>
-                <span
-                  role="radio"
-                  aria-label="Defense"
-                  tabIndex={0}
-                  className={`sort__pill ${
-                    sortedBy === "defense" ? "active" : ""
-                  }`}
-                  aria-checked={sortedBy === "defense"}
-                  onClick={() => {
-                    setSortedBy("defense");
-                    setIsShowingSortBy(false);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      setSortedBy("defense");
-                      setIsShowingSortBy(false);
-                    }
-                  }}
-                >
-                  Df
-                </span>
-                <span
-                  role="radio"
-                  aria-label="Special attack"
-                  tabIndex={0}
-                  className={`sort__pill ${
-                    sortedBy === "special-attack" ? "active" : ""
-                  }`}
-                  aria-checked={sortedBy === "special-attack"}
-                  onClick={() => {
-                    setSortedBy("special-attack");
-                    setIsShowingSortBy(false);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      setSortedBy("special-attack");
-                      setIsShowingSortBy(false);
-                    }
-                  }}
-                >
-                  {" "}
-                  SpA
-                </span>
-                <span
-                  role="radio"
-                  aria-label="Special defense"
-                  tabIndex={0}
-                  className={`sort__pill ${
-                    sortedBy === "special-defense" ? "active" : ""
-                  }`}
-                  aria-checked={sortedBy === "special-defense"}
-                  onClick={() => {
-                    setSortedBy("special-defense");
-                    setIsShowingSortBy(false);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      setSortedBy("special-defense");
-                      setIsShowingSortBy(false);
-                    }
-                  }}
-                >
-                  SpD
-                </span>
-                <span
-                  role="radio"
-                  aria-label="Speed"
-                  tabIndex={0}
-                  className={`sort__pill ${
-                    sortedBy === "speed" ? "active" : ""
-                  }`}
-                  aria-checked={sortedBy === "speed"}
-                  onClick={() => {
-                    setSortedBy("speed");
-                    setIsShowingSortBy(false);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      setSortedBy("speed");
-                      setIsShowingSortBy(false);
-                    }
-                  }}
-                >
-                  {" "}
-                  Spd
-                </span>
+                <SortByButton
+                  sortedBy={sortedBy}
+                  renderName="Default"
+                  statName="Default"
+                  setSortedBy={setSortedBy}
+                  setIsShowingSortBy={setIsShowingSortBy}
+                />
+                <SortByButton
+                  sortedBy={sortedBy}
+                  renderName="Hp"
+                  statName="Hp"
+                  setSortedBy={setSortedBy}
+                  setIsShowingSortBy={setIsShowingSortBy}
+                />
+                <SortByButton
+                  sortedBy={sortedBy}
+                  renderName="At"
+                  statName="Attack"
+                  setSortedBy={setSortedBy}
+                  setIsShowingSortBy={setIsShowingSortBy}
+                />
+                <SortByButton
+                  sortedBy={sortedBy}
+                  renderName="Df"
+                  statName="Defense"
+                  setSortedBy={setSortedBy}
+                  setIsShowingSortBy={setIsShowingSortBy}
+                />
+                <SortByButton
+                  sortedBy={sortedBy}
+                  renderName="SpA"
+                  statName="Special-attack"
+                  setSortedBy={setSortedBy}
+                  setIsShowingSortBy={setIsShowingSortBy}
+                />
+                <SortByButton
+                  sortedBy={sortedBy}
+                  renderName="SpD"
+                  statName="Special-defense"
+                  setSortedBy={setSortedBy}
+                  setIsShowingSortBy={setIsShowingSortBy}
+                />
+                <SortByButton
+                  sortedBy={sortedBy}
+                  renderName="Spd"
+                  statName="Speed"
+                  setSortedBy={setSortedBy}
+                  setIsShowingSortBy={setIsShowingSortBy}
+                />
               </div>
             </article>
           )}

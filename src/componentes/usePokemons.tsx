@@ -6,7 +6,7 @@ import {
   REGIONS,
   StatName,
   Stats,
-} from "../App";
+} from "../types/types";
 
 export const usePokemons = () => {
   // hacemos cositas

@@ -19,10 +19,12 @@ import steel from "./assets/iconos/steel.svg";
 import water from "./assets/iconos/water.svg";
 import pokeball from "./assets/iconos/pokeball.svg";
 import { SortByButton } from "./componentes/SortByButton";
+//import { usePokemons } from "./componentes/usePokemons";
 
 /**
  *  Iconos de los tipos de Pokémon
  */
+
 type Pokemon = {
   id: number;
   name: string;
@@ -141,7 +143,7 @@ export const App = () => {
     /**
      *  Carga de datos de Pokémons y gestión de estado de cargando.
      */
-    const getData = async () => {
+    const getPokemonAPIData = async () => {
       setIsLoading(true);
       setIsFilteringByText(true);
 
@@ -156,7 +158,7 @@ export const App = () => {
       setAllPokemons(pokeResponse);
       setIsLoading(false);
     };
-    getData();
+    getPokemonAPIData();
   }, [selectedRegion]);
   /**
    * Filters results based on input query term.

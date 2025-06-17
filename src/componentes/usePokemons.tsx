@@ -1,12 +1,7 @@
 import { useState, useEffect } from "react";
-import {
-  APIResponseURL,
-  Pokemon,
-  RegionName,
-  REGIONS,
-  StatName,
-  Stats,
-} from "../types/types";
+import { Pokemon, RegionName, REGIONS, StatName, Stats } from "../types/types";
+import { PokeAPIPokemonRepository } from "../core/infraestructura/fetchPokemon";
+import { PokemonService } from "../core/aplicacion/Pokemonservice";
 
 export const usePokemons = () => {
   // hacemos cositas
@@ -26,18 +21,18 @@ export const usePokemons = () => {
     return REGIONS.find((region) => region.name === "kanto")!;
   };
 
-  const pokeAPICall = async (urlOffset: number, urlLimit: number) => {
-    const { results }: APIResponseURL = await fetch(
-      `https://pokeapi.co/api/v2/pokemon?offset=${urlOffset}&limit=${urlLimit}`,
-    ).then((res) => res.json());
+  // const pokeAPICall = async (urlOffset: number, urlLimit: number) => {
+  //   const { results }: APIResponseURL = await fetch(
+  //     `https://pokeapi.co/api/v2/pokemon?offset=${urlOffset}&limit=${urlLimit}`,
+  //   ).then((res) => res.json());
 
-    const pokeResponse: Pokemon[] = await Promise.all(
-      results.map(
-        async ({ url }) => await fetch(url).then((res) => res.json()),
-      ),
-    );
-    return pokeResponse;
-  };
+  //   const pokeResponse: Pokemon[] = await Promise.all(
+  //     results.map(
+  //       async ({ url }) => await fetch(url).then((res) => res.json()),
+  //     ),
+  //   );
+  //   return pokeResponse;
+  // };
 
   useEffect(() => {
     /**
@@ -52,7 +47,9 @@ export const usePokemons = () => {
         getSelectedRegion(selectedRegion)?.regionEnd -
         getSelectedRegion(selectedRegion)?.regionStart;
 
-      const pokeResponse = await pokeAPICall(urlOffset, urlLimit);
+      const pokeResponse = await new PokemonService(
+        new PokeAPIPokemonRepository(),
+      ).getPokemon(urlOffset, urlLimit);
 
       setFilteredPokemon(pokeResponse);
       setAllPokemons(pokeResponse);

@@ -17,7 +17,7 @@ import rock from "../assets/iconos/rock.svg";
 import steel from "../assets/iconos/steel.svg";
 import water from "../assets/iconos/water.svg";
 
-export type Pokemon = {
+export type PokemonDTO = {
   id: number;
   name: string;
   sprites: {
@@ -27,15 +27,35 @@ export type Pokemon = {
       };
     };
   };
-  types: PokemonType[];
-  stats: Stats[];
+  types: PokemonTypeDTO[];
+  stats: StatsDTO[];
 };
 
-export type Stats = {
+export type Pokemon = {
+  id: number;
+  name: string;
+  image: string;
+  types: PokemonType[];
+  stats: {
+    hp: number;
+    attack: number;
+    defense: number;
+    special_attack: number;
+    special_defense: number;
+    speed: number;
+  };
+};
+
+export type StatsDTO = {
   base_stat: number;
   stat: {
     name: StatName;
   };
+};
+
+export type Stats = {
+  base_stat: number;
+  stat_name: StatName;
 };
 
 export type StatName =
@@ -47,10 +67,14 @@ export type StatName =
   | "speed"
   | "default";
 
-export type PokemonType = {
+export type PokemonTypeDTO = {
   type: {
     name: string;
   };
+};
+
+export type PokemonType = {
+  type_name: string;
 };
 
 export type Icons = {

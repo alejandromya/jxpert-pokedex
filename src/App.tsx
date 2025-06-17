@@ -19,6 +19,8 @@ export const App = () => {
     setSortedBy,
   } = usePokemons();
 
+  console.log(allPokemons);
+
   return (
     <div className="layout">
       <header className="header">
@@ -175,7 +177,7 @@ export const App = () => {
                 <SortByButton
                   sortedBy={sortedBy}
                   renderName="Default"
-                  statName="Default"
+                  statName={undefined}
                   setSortedBy={setSortedBy}
                   setIsShowingSortBy={setIsShowingSortBy}
                 />
@@ -250,7 +252,7 @@ export const App = () => {
             <ul className="grid" data-testid="lista">
               {allPokemons.map((res) => {
                 const customStyles: any = {
-                  "--color-type": `var(--color-${res.types[0].type.name}`,
+                  "--color-type": `var(--color-${res.types[0].type_name}`,
                 };
 
                 return (
@@ -262,24 +264,22 @@ export const App = () => {
                         </div>
                         <div className="card__tag">
                           <img
-                            src={ICON_POKEMON_TYPE[res.types[0].type.name]}
+                            src={ICON_POKEMON_TYPE[res.types[0].type_name]}
                             className="card__type"
-                            alt={`${res.types[0].type.name} primary type`}
+                            alt={`${res.types[0].type_name} primary type`}
                           />
                           {res.types[1] && (
                             <img
-                              src={ICON_POKEMON_TYPE[res.types[1].type.name]}
+                              src={ICON_POKEMON_TYPE[res.types[1].type_name]}
                               className="card__type"
-                              alt={`${res.types[1].type.name} secondary type`}
+                              alt={`${res.types[1].type_name} secondary type`}
                             />
                           )}
                         </div>
                       </header>
                       <img
                         className="card__avatar"
-                        src={
-                          res.sprites.other["official-artwork"].front_default
-                        }
+                        src={res.image}
                         loading="lazy"
                         alt={`${res.name} artwork`}
                       />

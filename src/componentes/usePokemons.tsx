@@ -21,19 +21,6 @@ export const usePokemons = () => {
     return REGIONS.find((region) => region.name === "kanto")!;
   };
 
-  // const pokeAPICall = async (urlOffset: number, urlLimit: number) => {
-  //   const { results }: APIResponseURL = await fetch(
-  //     `https://pokeapi.co/api/v2/pokemon?offset=${urlOffset}&limit=${urlLimit}`,
-  //   ).then((res) => res.json());
-
-  //   const pokeResponse: Pokemon[] = await Promise.all(
-  //     results.map(
-  //       async ({ url }) => await fetch(url).then((res) => res.json()),
-  //     ),
-  //   );
-  //   return pokeResponse;
-  // };
-
   useEffect(() => {
     /**
      *  Carga de datos de Pokémons y gestión de estado de cargando.
@@ -66,7 +53,7 @@ export const usePokemons = () => {
       (res) =>
         res.name.includes(searchingText.toLowerCase()) ||
         !!res.types.find((type) =>
-          type.type.name.startsWith(searchingText.toLowerCase()),
+          type.type_name.startsWith(searchingText.toLowerCase()),
         ),
     );
     return filteredPoks;
@@ -81,7 +68,7 @@ export const usePokemons = () => {
    * Sorts results based on selected sorting criteria.
    */
 
-  const sortByStat = (pokemons: Pokemon[], statName: Stats["stat"]["name"]) => {
+  const sortByStat = (pokemons: Pokemon[], statName: Stats["stat_name"]) => {
     if (statName === "default") {
       const pokemonsOrdered = [...pokemons].sort((pokemon1, pokemon2) => {
         return pokemon1.id - pokemon2.id;
@@ -90,10 +77,10 @@ export const usePokemons = () => {
     }
     const pokemonsOrdered = [...pokemons].sort((pokemon1, pokemon2) => {
       const pokemon1Stats =
-        pokemon1.stats.find((stats) => stats.stat.name === statName)
+        pokemon1.stats.find((stats) => stats.stat_name === statName)
           ?.base_stat ?? 0;
       const pokemon2Stats =
-        pokemon2.stats.find((stats) => stats.stat.name === statName)
+        pokemon2.stats.find((stats) => stats.stat_name === statName)
           ?.base_stat ?? 0;
 
       return pokemon2Stats - pokemon1Stats;

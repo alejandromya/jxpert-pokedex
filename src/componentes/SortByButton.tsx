@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 export const SortByButton = ({
   sortedBy,
   renderName,
@@ -5,20 +7,31 @@ export const SortByButton = ({
   setSortedBy,
   setIsShowingSortBy,
 }) => {
+  const [stat, setStat] = useState("");
+
+  useEffect(() => {
+    if (statName) {
+      setStat(statName);
+    } else {
+      setStat("default");
+    }
+  }, []);
+  console.log(sortedBy);
+
   return (
     <span
       role="radio"
-      aria-label={statName}
+      aria-label={stat}
       tabIndex={0}
-      className={`sort__pill ${sortedBy === statName.toLowerCase() ? "active" : ""}`}
+      className={`sort__pill ${sortedBy === stat ? "active" : ""}`}
       aria-checked={sortedBy === renderName.toLowerCase()}
       onClick={() => {
-        setSortedBy(statName.toLowerCase());
+        setSortedBy(stat);
         setIsShowingSortBy(false);
       }}
       onKeyDown={(e) => {
         if (e.key === "Enter") {
-          setSortedBy(statName.toLowerCase());
+          setSortedBy(stat);
           setIsShowingSortBy(false);
         }
       }}

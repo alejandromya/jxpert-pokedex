@@ -174,7 +174,7 @@ describe("App Component", () => {
     await userEvent.click(combobox);
 
     const radio = await screen.findByRole("radio", {
-      name: "Hp",
+      name: "hp",
     });
     await userEvent.click(radio);
 
@@ -209,7 +209,7 @@ describe("App Component", () => {
     await userEvent.click(combobox);
 
     const radio = await screen.findByRole("radio", {
-      name: "Attack",
+      name: "attack",
     });
     await userEvent.click(radio);
 
@@ -244,7 +244,7 @@ describe("App Component", () => {
     await userEvent.click(combobox);
 
     const radio = await screen.findByRole("radio", {
-      name: "Defense",
+      name: "defense",
     });
     await userEvent.click(radio);
 
@@ -279,7 +279,7 @@ describe("App Component", () => {
     await userEvent.click(combobox);
 
     const radio = await screen.findByRole("radio", {
-      name: "Special-attack",
+      name: "specialAttack",
     });
     await userEvent.click(radio);
 
@@ -314,7 +314,7 @@ describe("App Component", () => {
     await userEvent.click(combobox);
 
     const radio = await screen.findByRole("radio", {
-      name: "Special-defense",
+      name: "specialDefense",
     });
     await userEvent.click(radio);
 
@@ -349,7 +349,7 @@ describe("App Component", () => {
     await userEvent.click(combobox);
 
     const radio = await screen.findByRole("radio", {
-      name: "Speed",
+      name: "speed",
     });
     await userEvent.click(radio);
     //bulbasur 45Spd  servine 83

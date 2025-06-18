@@ -19,8 +19,6 @@ export const App = () => {
     setSortedBy,
   } = usePokemons();
 
-  console.log(allPokemons);
-
   return (
     <div className="layout">
       <header className="header">
@@ -184,42 +182,42 @@ export const App = () => {
                 <SortByButton
                   sortedBy={sortedBy}
                   renderName="Hp"
-                  statName="Hp"
+                  statName="hp"
                   setSortedBy={setSortedBy}
                   setIsShowingSortBy={setIsShowingSortBy}
                 />
                 <SortByButton
                   sortedBy={sortedBy}
                   renderName="At"
-                  statName="Attack"
+                  statName="attack"
                   setSortedBy={setSortedBy}
                   setIsShowingSortBy={setIsShowingSortBy}
                 />
                 <SortByButton
                   sortedBy={sortedBy}
                   renderName="Df"
-                  statName="Defense"
+                  statName="defense"
                   setSortedBy={setSortedBy}
                   setIsShowingSortBy={setIsShowingSortBy}
                 />
                 <SortByButton
                   sortedBy={sortedBy}
                   renderName="SpA"
-                  statName="Special-attack"
+                  statName="specialAttack"
                   setSortedBy={setSortedBy}
                   setIsShowingSortBy={setIsShowingSortBy}
                 />
                 <SortByButton
                   sortedBy={sortedBy}
                   renderName="SpD"
-                  statName="Special-defense"
+                  statName="specialDefense"
                   setSortedBy={setSortedBy}
                   setIsShowingSortBy={setIsShowingSortBy}
                 />
                 <SortByButton
                   sortedBy={sortedBy}
                   renderName="Spd"
-                  statName="Speed"
+                  statName="speed"
                   setSortedBy={setSortedBy}
                   setIsShowingSortBy={setIsShowingSortBy}
                 />
@@ -291,22 +289,19 @@ export const App = () => {
                               <p className="stat__name" aria-hidden="true">
                                 Hp
                               </p>
-                              <p>{res.stats[0].base_stat}</p>
+                              <p>{res.stats.hp}</p>
                             </div>
-                            <progress
-                              value={res.stats[0].base_stat}
-                              max="255"
-                            ></progress>
+                            <progress value={res.stats.hp} max="255"></progress>
                           </li>
                           <li className="card__stat" aria-label="Attack">
                             <div className="stat__value">
                               <p className="stat__name" aria-hidden="true">
                                 At
                               </p>
-                              <p>{res.stats[1].base_stat}</p>
+                              <p>{res.stats.attack}</p>
                             </div>
                             <progress
-                              value={res.stats[1].base_stat}
+                              value={res.stats.attack}
                               max="255"
                             ></progress>
                           </li>
@@ -315,10 +310,10 @@ export const App = () => {
                               <p className="stat__name" aria-hidden="true">
                                 Df
                               </p>
-                              <p>{res.stats[2].base_stat}</p>
+                              <p>{res.stats.defense}</p>
                             </div>
                             <progress
-                              value={res.stats[2].base_stat}
+                              value={res.stats.defense}
                               max="255"
                             ></progress>
                           </li>
@@ -330,10 +325,10 @@ export const App = () => {
                               <p className="stat__name" aria-hidden="true">
                                 SpA
                               </p>
-                              <p>{res.stats[3].base_stat}</p>
+                              <p>{res.stats.specialAttack}</p>
                             </div>
                             <progress
-                              value={res.stats[3].base_stat}
+                              value={res.stats.specialAttack}
                               max="255"
                             ></progress>
                           </li>
@@ -345,10 +340,10 @@ export const App = () => {
                               <p className="stat__name" aria-hidden="true">
                                 SpD
                               </p>
-                              <p>{res.stats[4].base_stat}</p>
+                              <p>{res.stats.specialDefense}</p>
                             </div>
                             <progress
-                              value={res.stats[4].base_stat}
+                              value={res.stats.specialDefense}
                               max="255"
                             ></progress>
                           </li>
@@ -357,10 +352,10 @@ export const App = () => {
                               <p className="stat__name" aria-hidden="true">
                                 Spd
                               </p>
-                              <p>{res.stats[5].base_stat}</p>
+                              <p>{res.stats.speed}</p>
                             </div>
                             <progress
-                              value={res.stats[5].base_stat}
+                              value={res.stats.speed}
                               max="255"
                             ></progress>
                           </li>

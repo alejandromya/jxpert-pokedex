@@ -40,8 +40,8 @@ export type Pokemon = {
     hp: number;
     attack: number;
     defense: number;
-    special_attack: number;
-    special_defense: number;
+    specialAttack: number;
+    specialDefense: number;
     speed: number;
   };
 };
@@ -49,7 +49,7 @@ export type Pokemon = {
 export type StatsDTO = {
   base_stat: number;
   stat: {
-    name: StatName;
+    name: StatNameDTO;
   };
 };
 
@@ -59,6 +59,15 @@ export type Stats = {
 };
 
 export type StatName =
+  | "hp"
+  | "attack"
+  | "defense"
+  | "specialAttack"
+  | "specialDefense"
+  | "speed"
+  | "default";
+
+export type StatNameDTO =
   | "hp"
   | "attack"
   | "defense"

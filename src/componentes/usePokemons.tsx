@@ -11,7 +11,9 @@ export const usePokemons = () => {
   const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
   const [searchingText, setSearchingText] = useState<string>("");
   const [selectedRegion, setSelectedRegion] = useState<RegionName>("kanto");
-  const [sortedBy, setSortedBy] = useState<StatName | "default">("default");
+  const [sortedBy, setSortedBy] = useState<StatName | "default" | undefined>(
+    "default",
+  );
 
   const getSelectedRegion = (regionName: RegionName) => {
     const region = REGIONS.find((region) => region.name === regionName);
@@ -68,24 +70,20 @@ export const usePokemons = () => {
    * Sorts results based on selected sorting criteria.
    */
 
-  const sortByStat = (pokemons: Pokemon[], statName: Stats["stat_name"]) => {
+  const sortByStat = (pokemons: Pokemon[], statName?: Stats["stat_name"]) => {
     if (statName === "default") {
       const pokemonsOrdered = [...pokemons].sort((pokemon1, pokemon2) => {
         return pokemon1.id - pokemon2.id;
       });
       return pokemonsOrdered;
     }
-    const pokemonsOrdered = [...pokemons].sort((pokemon1, pokemon2) => {
-      const pokemon1Stats =
-        pokemon1.stats.find((stats) => stats.stat_name === statName)
-          ?.base_stat ?? 0;
-      const pokemon2Stats =
-        pokemon2.stats.find((stats) => stats.stat_name === statName)
-          ?.base_stat ?? 0;
 
+    const pokemonsOrdered = [...pokemons].sort((pokemon1, pokemon2) => {
+      const pokemon1Stats = pokemon1.stats[statName!];
+      const pokemon2Stats = pokemon2.stats[statName!];
       return pokemon2Stats - pokemon1Stats;
     });
-
+    console.log(pokemonsOrdered);
     return pokemonsOrdered;
   };
 

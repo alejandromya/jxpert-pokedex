@@ -1,4 +1,5 @@
-import { Pokemon } from "../../types/types";
+import { Pokemon } from "../dominio/Pokemon";
+
 
   export    const filterPokemon = (filteredPokemon:Pokemon[], searchingText:string) => {
     const filteredPoks = filteredPokemon.filter(

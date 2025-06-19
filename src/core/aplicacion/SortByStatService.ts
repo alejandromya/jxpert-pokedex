@@ -1,4 +1,5 @@
-import { Pokemon, Stats } from "../../types/types";
+import { Stats } from "../../types/types";
+import { Pokemon } from "../dominio/Pokemon";
 
 export const sortByStat = (pokemons: Pokemon[], statName?: Stats["stat_name"]) => {
     if (statName === "default") {

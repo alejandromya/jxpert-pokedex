@@ -2,9 +2,9 @@ import { PokemonRepository } from "../dominio/PokemonRepository";
 import {
   APIResponseURL,
   PokemonDTO,
-  Pokemon,
   PokemonTypeDTO,
 } from "../../types/types";
+import { Pokemon } from "../dominio/Pokemon";
 
 export class PokeAPIPokemonRepository implements PokemonRepository {
   listPokemon = async (urlOffset: number, urlLimit: number) => {

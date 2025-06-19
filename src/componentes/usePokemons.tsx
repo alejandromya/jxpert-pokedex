@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Pokemon, RegionName, REGIONS, StatName, Stats } from "../types/types";
+import { RegionName, REGIONS, StatName, Stats } from "../types/types";
 import { PokeAPIPokemonRepository } from "../core/infraestructura/fetchPokemon";
 import { PokemonService } from "../core/aplicacion/PokemonService";
 import { getSelectedRegion } from "../core/aplicacion/RegionService";
 import { sortByStat } from "../core/aplicacion/SortByStatService";
 import { filterPokemon } from "../core/aplicacion/FilterService";
+import { Pokemon } from "../core/dominio/Pokemon";
 
 export const usePokemons = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);

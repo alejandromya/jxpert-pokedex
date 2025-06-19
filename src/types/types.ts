@@ -31,20 +31,7 @@ export type PokemonDTO = {
   stats: StatsDTO[];
 };
 
-export type Pokemon = {
-  id: number;
-  name: string;
-  image: string;
-  types: PokemonType[];
-  stats: {
-    hp: number;
-    attack: number;
-    defense: number;
-    specialAttack: number;
-    specialDefense: number;
-    speed: number;
-  };
-};
+
 
 export type StatsDTO = {
   base_stat: number;
@@ -82,9 +69,7 @@ export type PokemonTypeDTO = {
   };
 };
 
-export type PokemonType = {
-  type_name: string;
-};
+
 
 export type Icons = {
   [key: string]: string;

@@ -47,7 +47,6 @@ export class PokeAPIPokemonRepository implements PokemonRepository {
         stats: statsObj,
       };
     });
-    console.log(newPokeResponse);
     return newPokeResponse;
   };
 }

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Pokemon, RegionName, REGIONS, StatName, Stats } from "../types/types";
 import { PokeAPIPokemonRepository } from "../core/infraestructura/fetchPokemon";
 import { PokemonService } from "../core/aplicacion/PokemonService";
+import { getSelectedRegion } from "../core/aplicacion/RegionService";
 
 export const usePokemons = () => {
   // hacemos cositas
@@ -15,13 +16,13 @@ export const usePokemons = () => {
     "default",
   );
 
-  const getSelectedRegion = (regionName: RegionName) => {
+/*   const getSelectedRegion = (regionName: RegionName) => {
     const region = REGIONS.find((region) => region.name === regionName);
     if (region) {
       return region;
     }
     return REGIONS.find((region) => region.name === "kanto")!;
-  };
+  };  */
 
   useEffect(() => {
     /**

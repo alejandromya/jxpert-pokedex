@@ -3,9 +3,9 @@ import { Pokemon, RegionName, REGIONS, StatName, Stats } from "../types/types";
 import { PokeAPIPokemonRepository } from "../core/infraestructura/fetchPokemon";
 import { PokemonService } from "../core/aplicacion/PokemonService";
 import { getSelectedRegion } from "../core/aplicacion/RegionService";
+import { sortByStat } from "../core/aplicacion/SortByStatService";
 
 export const usePokemons = () => {
-  // hacemos cositas
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFilteringByText, setIsFilteringByText] = useState<boolean>(false);
   const [filteredPokemon, setFilteredPokemon] = useState<Pokemon[]>([]);
@@ -15,14 +15,6 @@ export const usePokemons = () => {
   const [sortedBy, setSortedBy] = useState<StatName | "default" | undefined>(
     "default",
   );
-
-/*   const getSelectedRegion = (regionName: RegionName) => {
-    const region = REGIONS.find((region) => region.name === regionName);
-    if (region) {
-      return region;
-    }
-    return REGIONS.find((region) => region.name === "kanto")!;
-  };  */
 
   useEffect(() => {
     /**
@@ -71,7 +63,7 @@ export const usePokemons = () => {
    * Sorts results based on selected sorting criteria.
    */
 
-  const sortByStat = (pokemons: Pokemon[], statName?: Stats["stat_name"]) => {
+  /* const sortByStat = (pokemons: Pokemon[], statName?: Stats["stat_name"]) => {
     if (statName === "default") {
       const pokemonsOrdered = [...pokemons].sort((pokemon1, pokemon2) => {
         return pokemon1.id - pokemon2.id;
@@ -84,16 +76,14 @@ export const usePokemons = () => {
       const pokemon2Stats = pokemon2.stats[statName!];
       return pokemon2Stats - pokemon1Stats;
     });
-    console.log(pokemonsOrdered);
     return pokemonsOrdered;
-  };
+  }; */
 
   useEffect(() => {
     const pokemons: Pokemon[] = sortByStat(allPokemons, sortedBy);
     setAllPokemons(pokemons);
   }, [allPokemons[0]?.id, sortedBy]);
 
-  // devolvemos cositas
   return {
     allPokemons,
     isLoading,

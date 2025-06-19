@@ -4,6 +4,7 @@ import { PokeAPIPokemonRepository } from "../core/infraestructura/fetchPokemon";
 import { PokemonService } from "../core/aplicacion/PokemonService";
 import { getSelectedRegion } from "../core/aplicacion/RegionService";
 import { sortByStat } from "../core/aplicacion/SortByStatService";
+import { filterPokemon } from "../core/aplicacion/FilterService";
 
 export const usePokemons = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -39,20 +40,6 @@ export const usePokemons = () => {
     };
     getPokemonAPIData();
   }, [selectedRegion]);
-  /**
-   * Filters results based on input query term.
-   */
-
-  const filterPokemon = (filteredPokemon:Pokemon[], searchingText:string) => {
-    const filteredPoks = filteredPokemon.filter(
-      (res) =>
-        res.name.includes(searchingText.toLowerCase()) ||
-        !!res.types.find((type) =>
-          type.type_name.startsWith(searchingText.toLowerCase()),
-        ),
-    );
-    return filteredPoks;
-  };
 
   useEffect(() => {
     setAllPokemons(filterPokemon(filteredPokemon, searchingText));

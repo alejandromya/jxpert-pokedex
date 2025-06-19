@@ -16,7 +16,6 @@ export const SortByButton = ({
       setStat("default");
     }
   }, []);
-  console.log(sortedBy);
 
   return (
     <span

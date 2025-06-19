@@ -1,7 +1,7 @@
 import { useState } from "react";
 import pokeball from "./assets/iconos/pokeball.svg";
-import { SortByButton } from "./componentes/SortByButton";
-import usePokemons from "./hooks/usePokemons";
+import { SortByButton } from "./ui/componentes/SortByButton";
+import usePokemons from "./ui/hooks/usePokemons";
 import { REGIONS, ICON_POKEMON_TYPE } from "./types/types";
 
 export const App = () => {

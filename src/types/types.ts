@@ -17,29 +17,6 @@ import rock from "../assets/iconos/rock.svg";
 import steel from "../assets/iconos/steel.svg";
 import water from "../assets/iconos/water.svg";
 
-export type PokemonDTO = {
-  id: number;
-  name: string;
-  sprites: {
-    other: {
-      "official-artwork": {
-        front_default;
-      };
-    };
-  };
-  types: PokemonTypeDTO[];
-  stats: StatsDTO[];
-};
-
-
-
-export type StatsDTO = {
-  base_stat: number;
-  stat: {
-    name: StatNameDTO;
-  };
-};
-
 export type Stats = {
   base_stat: number;
   stat_name: StatName;
@@ -53,21 +30,6 @@ export type StatName =
   | "specialDefense"
   | "speed"
   | "default";
-
-export type StatNameDTO =
-  | "hp"
-  | "attack"
-  | "defense"
-  | "special-attack"
-  | "special-defense"
-  | "speed"
-  | "default";
-
-export type PokemonTypeDTO = {
-  type: {
-    name: string;
-  };
-};
 
 
 
@@ -96,12 +58,6 @@ export const ICON_POKEMON_TYPE: Icons = {
   water,
 };
 
-export type Results = {
-  url: string;
-};
-export type APIResponseURL = {
-  results: Results[];
-};
 
 export const REGIONS = [
   { name: "kanto", regionStart: 0, regionEnd: 151 },

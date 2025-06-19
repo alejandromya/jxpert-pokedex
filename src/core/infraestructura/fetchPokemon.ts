@@ -1,9 +1,4 @@
 import { PokemonRepository } from "../dominio/PokemonRepository";
-import {
-  APIResponseURL,
-  PokemonDTO,
-  PokemonTypeDTO,
-} from "../../types/types";
 import { Pokemon } from "../dominio/Pokemon";
 
 export class PokeAPIPokemonRepository implements PokemonRepository {
@@ -56,3 +51,45 @@ export class PokeAPIPokemonRepository implements PokemonRepository {
     return newPokeResponse;
   };
 }
+
+export type PokemonDTO = {
+  id: number;
+  name: string;
+  sprites: {
+    other: {
+      "official-artwork": {
+        front_default;
+      };
+    };
+  };
+  types: PokemonTypeDTO[];
+  stats: StatsDTO[];
+};
+
+export type StatsDTO = {
+  base_stat: number;
+  stat: {
+    name: StatNameDTO;
+  };
+};
+
+export type StatNameDTO =
+  | "hp"
+  | "attack"
+  | "defense"
+  | "special-attack"
+  | "special-defense"
+  | "speed"
+  | "default";
+
+export type PokemonTypeDTO = {
+  type: {
+    name: string;
+  };
+};
+export type Results = {
+  url: string;
+};
+export type APIResponseURL = {
+  results: Results[];
+};

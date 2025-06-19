@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { RegionName, REGIONS, StatName, Stats } from "../types/types";
+import { RegionName, StatName } from "../types/types";
 import { PokeAPIPokemonRepository } from "../core/infraestructura/fetchPokemon";
 import { PokemonService } from "../core/aplicacion/PokemonService";
 import { getSelectedRegion } from "../core/aplicacion/RegionService";

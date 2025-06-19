@@ -43,7 +43,7 @@ export const usePokemons = () => {
    * Filters results based on input query term.
    */
 
-  const filterPokemon = () => {
+  const filterPokemon = (filteredPokemon:Pokemon[], searchingText:string) => {
     const filteredPoks = filteredPokemon.filter(
       (res) =>
         res.name.includes(searchingText.toLowerCase()) ||
@@ -55,29 +55,10 @@ export const usePokemons = () => {
   };
 
   useEffect(() => {
-    setAllPokemons(filterPokemon());
+    setAllPokemons(filterPokemon(filteredPokemon, searchingText));
 
     setIsFilteringByText(false);
   }, [filteredPokemon[0]?.id, searchingText]);
-  /**
-   * Sorts results based on selected sorting criteria.
-   */
-
-  /* const sortByStat = (pokemons: Pokemon[], statName?: Stats["stat_name"]) => {
-    if (statName === "default") {
-      const pokemonsOrdered = [...pokemons].sort((pokemon1, pokemon2) => {
-        return pokemon1.id - pokemon2.id;
-      });
-      return pokemonsOrdered;
-    }
-
-    const pokemonsOrdered = [...pokemons].sort((pokemon1, pokemon2) => {
-      const pokemon1Stats = pokemon1.stats[statName!];
-      const pokemon2Stats = pokemon2.stats[statName!];
-      return pokemon2Stats - pokemon1Stats;
-    });
-    return pokemonsOrdered;
-  }; */
 
   useEffect(() => {
     const pokemons: Pokemon[] = sortByStat(allPokemons, sortedBy);

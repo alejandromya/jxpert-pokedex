@@ -21,14 +21,6 @@ export const usePokemons = () => {
   const [favoriteList, setFavoriteList] = useState<Boolean>(false);
 
   useEffect(() => {
-    if (favoriteList) {
-      setAllPokemons(() => favoritePokemons);
-    } else {
-      setSelectedRegion(() => "kanto");
-    }
-  }, [favoriteList, favoritePokemons]);
-
-  useEffect(() => {
     /**
      *  Carga de datos de Pokémons y gestión de estado de cargando.
      */

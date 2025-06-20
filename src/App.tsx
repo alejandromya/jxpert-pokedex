@@ -260,7 +260,7 @@ export const App = () => {
           {/* Prints cards */}
           {!isFilteringByText && !isLoading && allPokemons.length > 0 && (
             <ul className="grid" data-testid="lista">
-              {allPokemons.map((res) => {
+              {(!favoriteList ? allPokemons : favoritePokemons).map((res) => {
                 const customStyles: any = {
                   "--color-type": `var(--color-${res.types[0].type_name}`,
                 };

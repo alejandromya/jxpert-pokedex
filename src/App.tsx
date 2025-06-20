@@ -284,7 +284,6 @@ export const App = () => {
                       />
                       <section className="card__content">
                         <FavButton />
-
                         <h3 className="card__title">{res.name}</h3>
                         <ul aria-description="Stats resume">
                           <li className="card__stat" aria-label="Health points">

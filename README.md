@@ -1,5 +1,8 @@
-# Proyecto de Alejandro Maya
+# FUNCIONALIDAD FAVORITO / DREAM TEAM
 
-# Good day!
-
-# Añadida rama de Josu para el Pull Request y añadido el cambio de cambioAlex
+- Primero en la Página principal (App) crearemos un nuevo array vacío, donde estan los pokemons favoritos.
+- Estos pokemons, siempre irán a LocalHost conforme se añada uno nuevo.
+- Habrá un dominio "PokemonFavRepository" del tipo Pokemon[].
+- Se creará un nuevo componente, que será la estrella
+  - Si la pulsamos cambiará de forma o estado
+- Conforme añadamos uno nuevo, se incluirá directamente a LocalHost

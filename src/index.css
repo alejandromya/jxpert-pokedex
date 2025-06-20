@@ -61,16 +61,16 @@
   --radius-xl: 1.5rem;
   --radius-2xl: 2rem;
 
-  --shadow-s: 0px 5px 10px -2px color-mix(in oklab, var(--color-accent), transparent
-          85%),
+  --shadow-s:
+    0px 5px 10px -2px color-mix(in oklab, var(--color-accent), transparent 85%),
     0px 2px 3px -1px color-mix(in oklab, var(--color-accent), transparent 93%);
 
-  --shadow-m: 0px 10px 15px -3px color-mix(in oklab, var(--color-accent), transparent
-          90%),
+  --shadow-m:
+    0px 10px 15px -3px color-mix(in oklab, var(--color-accent), transparent 90%),
     0px 4px 6px -2px color-mix(in oklab, var(--color-accent), transparent 95%);
 
-  --shadow-l: 0px 15px 20px -5px color-mix(in oklab, var(--color-accent), transparent
-          90%),
+  --shadow-l:
+    0px 15px 20px -5px color-mix(in oklab, var(--color-accent), transparent 90%),
     0px 6px 8px -3px color-mix(in oklab, var(--color-accent), transparent 95%);
 }
 
@@ -470,6 +470,15 @@ custom-progress::-ms-fill {
 
   padding: var(--spacing-m);
   color: var(--color-neutral-0);
+}
+.card__fav {
+  background-color: transparent;
+  border: none;
+  width: 40px;
+  height: 40px;
+}
+.card__fav:hover {
+  background-color: red;
 }
 
 .card__title {

@@ -3,6 +3,7 @@ import pokeball from "./assets/iconos/pokeball.svg";
 import { SortByButton } from "./ui/componentes/SortByButton";
 import usePokemons from "./ui/hooks/usePokemons";
 import { REGIONS, ICON_POKEMON_TYPE } from "./types/types";
+import { FavButton } from "./ui/componentes/FavButton";
 
 export const App = () => {
   const [isShowingRegions, setIsShowingRegions] = useState(false);
@@ -282,22 +283,7 @@ export const App = () => {
                         alt={`${res.name} artwork`}
                       />
                       <section className="card__content">
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 18 18"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M9.00561 13.9372L4.06109 16.5L5.00561 11.0719L1 7.22816L6.52774 6.4384L9 1.5L11.4723 6.4384L17 7.22816L12.9944 11.0719L13.9389 16.5L9.00561 13.9372Z"
-                            fill="white"
-                            stroke="white"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
+                        <FavButton />
 
                         <h3 className="card__title">{res.name}</h3>
                         <ul aria-description="Stats resume">

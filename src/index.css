@@ -471,14 +471,25 @@ custom-progress::-ms-fill {
   padding: var(--spacing-m);
   color: var(--color-neutral-0);
 }
+
+.card__fav__container {
+  display: flex;
+  justify-content: flex-end;
+}
 .card__fav {
   background-color: transparent;
   border: none;
   width: 40px;
   height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 .card__fav:hover {
-  background-color: red;
+  background-color: rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  color: white;
 }
 
 .card__title {

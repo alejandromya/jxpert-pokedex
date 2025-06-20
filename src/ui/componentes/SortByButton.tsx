@@ -7,7 +7,7 @@ export const SortByButton = ({
   setSortedBy,
   setIsShowingSortBy,
 }) => {
-  const [stat, setStat] = useState("");
+  const [stat, setStat] = useState<string>("");
 
   useEffect(() => {
     if (statName) {

@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const FavButton = () => {
   const [isFavorite, setIsFavorite] = useState<Boolean>(false);
   const [isHovered, setIsHovered] = useState<Boolean>(false);
-
-  useEffect(() => {}, []);
 
   return (
     <div className="card__fav__container">

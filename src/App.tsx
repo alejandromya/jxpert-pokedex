@@ -4,6 +4,7 @@ import { SortByButton } from "./ui/componentes/SortByButton";
 import usePokemons from "./ui/hooks/usePokemons";
 import { REGIONS, ICON_POKEMON_TYPE } from "./types/types";
 import { FavButton } from "./ui/componentes/FavButton";
+import { FavButtonList } from "./ui/componentes/FavButtonList";
 
 export const App = () => {
   const [isShowingRegions, setIsShowingRegions] = useState(false);
@@ -15,9 +16,13 @@ export const App = () => {
     selectedRegion,
     searchingText,
     sortedBy,
+    favoritePokemons,
+    setFavoritePokemons,
     setSearchingText,
     setSelectedRegion,
     setSortedBy,
+    favoriteList,
+    setFavoriteList,
   } = usePokemons();
 
   return (
@@ -29,6 +34,12 @@ export const App = () => {
 
       {/* Searcher */}
       <main className="container">
+        <section>
+          <FavButtonList
+            favoriteList={favoriteList}
+            setFavoriteList={setFavoriteList}
+          />
+        </section>
         <section className="search">
           <svg
             width="24"
@@ -283,7 +294,10 @@ export const App = () => {
                         alt={`${res.name} artwork`}
                       />
                       <section className="card__content">
-                        <FavButton />
+                        <FavButton
+                          pokemon={res}
+                          setFavoritePokemons={setFavoritePokemons}
+                        />
                         <h3 className="card__title">{res.name}</h3>
                         <ul aria-description="Stats resume">
                           <li className="card__stat" aria-label="Health points">

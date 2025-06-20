@@ -17,6 +17,16 @@ export const usePokemons = () => {
   const [sortedBy, setSortedBy] = useState<StatName | "default" | undefined>(
     "default",
   );
+  const [favoritePokemons, setFavoritePokemons] = useState<Pokemon[]>([]);
+  const [favoriteList, setFavoriteList] = useState<Boolean>(false);
+
+  useEffect(() => {
+    if (favoriteList) {
+      setAllPokemons(() => favoritePokemons);
+    } else {
+      setSelectedRegion(() => "kanto");
+    }
+  }, [favoriteList, favoritePokemons]);
 
   useEffect(() => {
     /**
@@ -60,9 +70,13 @@ export const usePokemons = () => {
     selectedRegion,
     searchingText,
     sortedBy,
+    favoritePokemons,
+    favoriteList,
+    setFavoritePokemons,
     setSearchingText,
     setSelectedRegion,
     setSortedBy,
+    setFavoriteList,
   };
 };
 

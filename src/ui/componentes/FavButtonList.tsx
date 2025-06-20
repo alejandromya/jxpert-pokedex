@@ -1,29 +1,18 @@
 import { useState } from "react";
-import { Pokemon } from "../../core/dominio/Pokemon";
 
 type Props = {
-  pokemon: Pokemon;
-  setFavoritePokemons: React.Dispatch<React.SetStateAction<Pokemon[]>>;
+  favoriteList: boolean;
+  setFavoriteList: React.Dispatch<React.SetStateAction<Boolean>>;
 };
-export const FavButton = ({ pokemon, setFavoritePokemons }: Props) => {
-  const [isFavorite, setIsFavorite] = useState<Boolean>(false);
+export const FavButtonList = ({ favoriteList, setFavoriteList }) => {
   const [isHovered, setIsHovered] = useState<Boolean>(false);
 
   const handleCLick = () => {
-    const nextFavoriteState = !isFavorite;
-    setIsFavorite(nextFavoriteState);
-    setFavoritePokemons((prev) => {
-      const exists = prev.find((prev) => prev.id === pokemon.id);
-      if (nextFavoriteState) {
-        return exists ? prev : [...prev, pokemon];
-      } else {
-        return prev.filter((prev) => prev.id !== pokemon.id);
-      }
-    });
+    setFavoriteList(!favoriteList);
   };
 
   return (
-    <div className="card__fav__container">
+    <div>
       <button
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -39,9 +28,9 @@ export const FavButton = ({ pokemon, setFavoritePokemons }: Props) => {
         >
           <path
             d="M9.00561 13.9372L4.06109 16.5L5.00561 11.0719L1 7.22816L6.52774 6.4384L9 1.5L11.4723 6.4384L17 7.22816L12.9944 11.0719L13.9389 16.5L9.00561 13.9372Z"
-            fill={isFavorite ? "white" : "none"}
-            strokeOpacity={isFavorite || isHovered ? 1 : 0.6}
-            stroke="white"
+            fill={favoriteList ? "black" : "none"}
+            strokeOpacity={favoriteList || isHovered ? 1 : 0.6}
+            stroke="black"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"

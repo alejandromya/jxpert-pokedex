@@ -16,9 +16,6 @@ import psychic from "../assets/iconos/psychic.svg";
 import rock from "../assets/iconos/rock.svg";
 import steel from "../assets/iconos/steel.svg";
 import water from "../assets/iconos/water.svg";
-import star from "../assets/iconos/star.svg";
-import starFav from "../assets/iconos/starFav.svg";
-import starHover from "../assets/iconos/starHover.svg";
 
 export type Stats = {
   base_stat: number;
@@ -57,9 +54,6 @@ export const ICON_POKEMON_TYPE: Icons = {
   rock,
   steel,
   water,
-  star,
-  starFav,
-  starHover,
 };
 
 export const REGIONS = [

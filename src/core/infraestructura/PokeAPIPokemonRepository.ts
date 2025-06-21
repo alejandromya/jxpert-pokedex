@@ -1,8 +1,22 @@
 import { PokemonRepository } from "../dominio/PokemonRepository";
 import { Pokemon } from "../dominio/Pokemon";
+import { RegionName, REGIONS } from "../../types/types";
 
 export class PokeAPIPokemonRepository implements PokemonRepository {
-  listPokemon = async (urlOffset: number, urlLimit: number) => {
+  listPokemon = async (regionName: RegionName) => {
+    let region = REGIONS.find((region) => region.name === regionName);
+    let urlOffset: number;
+    let urlLimit: number;
+    if (region) {
+      urlOffset = region.regionStart;
+      urlLimit = region.regionEnd;
+    } else {
+      urlOffset = REGIONS.find(
+        (region) => region.name === "kanto",
+      )!.regionStart;
+      urlLimit = REGIONS.find((region) => region.name === "kanto")!.regionEnd;
+    }
+
     const { results }: APIResponseURL = await fetch(
       `https://pokeapi.co/api/v2/pokemon?offset=${urlOffset}&limit=${urlLimit}`,
     ).then((res) => res.json());

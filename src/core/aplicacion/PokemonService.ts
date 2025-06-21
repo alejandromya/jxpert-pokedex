@@ -1,8 +1,9 @@
+import { RegionName } from "../../types/types";
 import { PokemonRepository } from "../dominio/PokemonRepository";
 
 export class PokemonService {
   constructor(private pokemonRepository: PokemonRepository) {}
-  getPokemonByRegion = (urlOffset: number, urlLimit: number) => {
-    return this.pokemonRepository.listPokemon(urlOffset, urlLimit);
+  getPokemonByRegion = (region: RegionName) => {
+    return this.pokemonRepository.listPokemon(region);
   };
 }

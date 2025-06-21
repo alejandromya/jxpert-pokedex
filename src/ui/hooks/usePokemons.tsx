@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { RegionName, StatName } from "../../types/types";
-import { getSelectedRegion } from "../../core/aplicacion/RegionService";
 import { sortByStat } from "../../core/aplicacion/SortByStatService";
 import { filterPokemon } from "../../core/aplicacion/FilterService";
 import { Pokemon } from "../../core/dominio/Pokemon";
@@ -33,16 +32,8 @@ export const usePokemons = () => {
     const getPokemonData = async () => {
       setIsLoading(true);
       setIsFilteringByText(true);
-
-      const urlOffset = getSelectedRegion(selectedRegion)?.regionStart;
-      const urlLimit =
-        getSelectedRegion(selectedRegion)?.regionEnd -
-        getSelectedRegion(selectedRegion)?.regionStart;
-
-      const regionPokemons = await pokemonService.getPokemonByRegion(
-        urlOffset,
-        urlLimit,
-      );
+      const regionPokemons =
+        await pokemonService.getPokemonByRegion(selectedRegion);
 
       setFilteredPokemon(regionPokemons);
       setAllPokemons(regionPokemons);

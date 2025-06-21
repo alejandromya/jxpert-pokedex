@@ -1,13 +1,10 @@
 import { useState, useEffect } from "react";
 import { RegionName, StatName } from "../../types/types";
-import { PokeAPIPokemonRepository } from "../../core/infraestructura/fetchPokemon";
-import { PokemonService } from "../../core/aplicacion/PokemonService";
 import { getSelectedRegion } from "../../core/aplicacion/RegionService";
 import { sortByStat } from "../../core/aplicacion/SortByStatService";
 import { filterPokemon } from "../../core/aplicacion/FilterService";
 import { Pokemon } from "../../core/dominio/Pokemon";
-import { PokemonLocalhostService } from "../../core/aplicacion/FavPokemonService";
-import { LocalHostPokemonRepository } from "../../core/infraestructura/localHostPokemon";
+import { pokemonFavService, pokemonService } from "../../core/di/pokemon";
 
 export const usePokemons = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -20,16 +17,12 @@ export const usePokemons = () => {
     "default",
   );
   const [favoritePokemons, setFavoritePokemons] = useState<Pokemon[]>(
-    new PokemonLocalhostService(new LocalHostPokemonRepository()).getFavPokemon(
-      "savedFavPokemons",
-    ),
+    pokemonFavService.getFavPokemon(),
   );
   const [favoriteList, setFavoriteList] = useState<boolean>(false);
 
   useEffect(() => {
-    new PokemonLocalhostService(
-      new LocalHostPokemonRepository(),
-    ).saveFavPokemon("savedFavPokemons", favoritePokemons);
+    pokemonFavService.saveFavPokemon(favoritePokemons);
     setFavoritePokemons(favoritePokemons);
   }, [favoritePokemons]);
 
@@ -46,8 +39,6 @@ export const usePokemons = () => {
         getSelectedRegion(selectedRegion)?.regionEnd -
         getSelectedRegion(selectedRegion)?.regionStart;
 
-      const pokemonService = new PokemonService(new PokeAPIPokemonRepository());
-
       const regionPokemons = await pokemonService.getPokemonByRegion(
         urlOffset,
         urlLimit,
@@ -61,9 +52,7 @@ export const usePokemons = () => {
   }, [selectedRegion]);
 
   useEffect(() => {
-    const favPoks = new PokemonLocalhostService(
-      new LocalHostPokemonRepository(),
-    ).getFavPokemon("savedFavPokemons");
+    const favPoks = pokemonFavService.getFavPokemon();
     setFavoritePokemons(favPoks);
   }, []);
 

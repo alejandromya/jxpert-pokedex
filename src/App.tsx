@@ -5,6 +5,7 @@ import usePokemons from "./ui/hooks/usePokemons";
 import { REGIONS, ICON_POKEMON_TYPE } from "./types/types";
 import { FavButton } from "./ui/componentes/FavButton";
 import { FavButtonList } from "./ui/componentes/FavButtonList";
+import "./core/di/pokemon";
 
 export const App = () => {
   const [isShowingRegions, setIsShowingRegions] = useState(false);

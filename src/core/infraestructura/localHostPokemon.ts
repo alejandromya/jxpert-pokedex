@@ -2,13 +2,13 @@ import { FavPokemonRepository } from "../dominio/FavPokemonRepository";
 import { Pokemon } from "../dominio/Pokemon";
 
 export class LocalHostPokemonRepository implements FavPokemonRepository {
-  getFavPokemonFromLocalhost = (name: string) => {
-    const favPokemon = localStorage.getItem(name);
+  getFavPokemonFromLocalhost = () => {
+    const favPokemon = localStorage.getItem("savedFavPokemons");
     if (favPokemon === null) return [];
     return JSON.parse(favPokemon);
   };
-  saveFavPokemonToLocalhost = (name: string, pokemons: Pokemon[]) => {
+  saveFavPokemonToLocalhost = (pokemons: Pokemon[]) => {
     const favoritePokemonsToString = JSON.stringify(pokemons);
-    localStorage.setItem(name, favoritePokemonsToString);
+    localStorage.setItem("savedFavPokemons", favoritePokemonsToString);
   };
 }

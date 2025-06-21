@@ -1,16 +1,16 @@
 import { FavPokemonRepository } from "../dominio/FavPokemonRepository";
 import { Pokemon } from "../dominio/Pokemon";
 
-export class PokemonLocalhostService {
+export class PokemonFavService {
   constructor(private favPokemonRepository: FavPokemonRepository) {}
 
-  getFavPokemon = (name: string) => {
+  getFavPokemon = () => {
     const pokemonFavoritos =
-      this.favPokemonRepository.getFavPokemonFromLocalhost(name);
+      this.favPokemonRepository.getFavPokemonFromLocalhost();
     return pokemonFavoritos;
   };
 
-  saveFavPokemon = (name: string, pokemons: Pokemon[]) => {
-    this.favPokemonRepository.saveFavPokemonToLocalhost(name, pokemons);
+  saveFavPokemon = (pokemons: Pokemon[]) => {
+    this.favPokemonRepository.saveFavPokemonToLocalhost(pokemons);
   };
 }

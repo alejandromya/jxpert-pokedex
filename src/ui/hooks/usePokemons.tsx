@@ -6,6 +6,10 @@ import { getSelectedRegion } from "../../core/aplicacion/RegionService";
 import { sortByStat } from "../../core/aplicacion/SortByStatService";
 import { filterPokemon } from "../../core/aplicacion/FilterService";
 import { Pokemon } from "../../core/dominio/Pokemon";
+import {
+  getFavPokemon,
+  saveFavPokemon,
+} from "../../core/aplicacion/FavPokemonService";
 
 export const usePokemons = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -17,14 +21,19 @@ export const usePokemons = () => {
   const [sortedBy, setSortedBy] = useState<StatName | "default" | undefined>(
     "default",
   );
-  const [favoritePokemons, setFavoritePokemons] = useState<Pokemon[]>([]);
-  const [favoriteList, setFavoriteList] = useState<Boolean>(false);
+  const [favoritePokemons, setFavoritePokemons] =
+    useState<Pokemon[]>(getFavPokemon());
+  const [favoriteList, setFavoriteList] = useState<boolean>(false);
+
+  useEffect(() => {
+    saveFavPokemon(favoritePokemons);
+  }, [favoritePokemons]);
 
   useEffect(() => {
     /**
      *  Carga de datos de Pokémons y gestión de estado de cargando.
      */
-    const getPokemonAPIData = async () => {
+    const getPokemonData = async () => {
       setIsLoading(true);
       setIsFilteringByText(true);
 
@@ -33,16 +42,28 @@ export const usePokemons = () => {
         getSelectedRegion(selectedRegion)?.regionEnd -
         getSelectedRegion(selectedRegion)?.regionStart;
 
-      const pokeResponse = await new PokemonService(
-        new PokeAPIPokemonRepository(),
-      ).getPokemon(urlOffset, urlLimit);
+      const pokemonService = new PokemonService(new PokeAPIPokemonRepository());
 
-      setFilteredPokemon(pokeResponse);
-      setAllPokemons(pokeResponse);
+      const regionPokemons = await pokemonService.getPokemonByRegion(
+        urlOffset,
+        urlLimit,
+      );
+
+      setFilteredPokemon(regionPokemons);
+      setAllPokemons(regionPokemons);
       setIsLoading(false);
     };
-    getPokemonAPIData();
+    getPokemonData();
   }, [selectedRegion]);
+
+  useEffect(() => {
+    setFavoritePokemons(() => {
+      const favPokemon = getFavPokemon();
+      if (favPokemon) {
+        return favPokemon;
+      }
+    });
+  }, []);
 
   useEffect(() => {
     setAllPokemons(filterPokemon(filteredPokemon, searchingText));

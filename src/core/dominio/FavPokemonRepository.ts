@@ -1,5 +1,6 @@
 import { Pokemon } from "./Pokemon";
 
 export interface PokemonRepository {
-  listPokemon(id: number): Pokemon[];
+  getFavPokemon(name: string): Pokemon[];
+  saveFavPokemon(name: string, pokemon: Pokemon[]): void;
 }

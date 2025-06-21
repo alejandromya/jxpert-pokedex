@@ -9,14 +9,14 @@ export class PokeAPIPokemonRepository implements PokemonRepository {
     let urlLimit: number;
     if (region) {
       urlOffset = region.regionStart;
-      urlLimit = region.regionEnd;
+      urlLimit = region.regionEnd - region.regionStart;
     } else {
       urlOffset = REGIONS.find(
         (region) => region.name === "kanto",
       )!.regionStart;
       urlLimit = REGIONS.find((region) => region.name === "kanto")!.regionEnd;
     }
-
+    console.log(region?.regionStart, region?.regionEnd, urlOffset, urlLimit);
     const { results }: APIResponseURL = await fetch(
       `https://pokeapi.co/api/v2/pokemon?offset=${urlOffset}&limit=${urlLimit}`,
     ).then((res) => res.json());

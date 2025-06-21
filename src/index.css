@@ -473,8 +473,11 @@ custom-progress::-ms-fill {
 }
 
 .card__fav__container {
+  position: absolute;
   display: flex;
   justify-content: flex-end;
+  right: 10px;
+  top: 0px;
 }
 .card__fav {
   background-color: transparent;

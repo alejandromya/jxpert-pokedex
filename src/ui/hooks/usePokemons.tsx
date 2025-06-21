@@ -6,10 +6,8 @@ import { getSelectedRegion } from "../../core/aplicacion/RegionService";
 import { sortByStat } from "../../core/aplicacion/SortByStatService";
 import { filterPokemon } from "../../core/aplicacion/FilterService";
 import { Pokemon } from "../../core/dominio/Pokemon";
-import {
-  getFavPokemon,
-  saveFavPokemon,
-} from "../../core/aplicacion/FavPokemonService";
+import { PokemonLocalhostService } from "../../core/aplicacion/FavPokemonService";
+import { LocalHostPokemonRepository } from "../../core/infraestructura/localHostPokemon";
 
 export const usePokemons = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -21,12 +19,18 @@ export const usePokemons = () => {
   const [sortedBy, setSortedBy] = useState<StatName | "default" | undefined>(
     "default",
   );
-  const [favoritePokemons, setFavoritePokemons] =
-    useState<Pokemon[]>(getFavPokemon());
+  const [favoritePokemons, setFavoritePokemons] = useState<Pokemon[]>(
+    new PokemonLocalhostService(new LocalHostPokemonRepository()).getFavPokemon(
+      "savedFavPokemons",
+    ),
+  );
   const [favoriteList, setFavoriteList] = useState<boolean>(false);
 
   useEffect(() => {
-    saveFavPokemon(favoritePokemons);
+    new PokemonLocalhostService(
+      new LocalHostPokemonRepository(),
+    ).saveFavPokemon("savedFavPokemons", favoritePokemons);
+    setFavoritePokemons(favoritePokemons);
   }, [favoritePokemons]);
 
   useEffect(() => {
@@ -57,12 +61,10 @@ export const usePokemons = () => {
   }, [selectedRegion]);
 
   useEffect(() => {
-    setFavoritePokemons(() => {
-      const favPokemon = getFavPokemon();
-      if (favPokemon) {
-        return favPokemon;
-      }
-    });
+    const favPoks = new PokemonLocalhostService(
+      new LocalHostPokemonRepository(),
+    ).getFavPokemon("savedFavPokemons");
+    setFavoritePokemons(favPoks);
   }, []);
 
   useEffect(() => {

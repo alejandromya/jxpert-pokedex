@@ -297,7 +297,6 @@ export const App = () => {
                         <FavButton
                           pokemon={res}
                           setFavoritePokemons={setFavoritePokemons}
-                          favoritePokemons={favoritePokemons}
                         />
                         <h3 className="card__title">{res.name}</h3>
                         <ul aria-description="Stats resume">
